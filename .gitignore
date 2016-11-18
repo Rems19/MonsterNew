@@ -1,0 +1,7 @@
+*.o
+*.db
+*.pro.user
+*.pri
+*.qmake.stash
+Makefile
+Monster
