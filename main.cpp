@@ -21,10 +21,15 @@ int main() {
 
     // Screen initialization
     SDL_Surface* screen;
+
     initScreen(screen);
 
     // Menu initialization
     initMenu();
+
+    // Grid initialization
+    TGrid grid;
+    initGrid(grid);
 
     // Resource loading
     SDL_Surface* gameBackground = loadImage("assets/background.bmp");

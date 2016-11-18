@@ -23,6 +23,6 @@ using TGrid = std::array< std::array<int, HEIGHT> , WIDTH >;
 void coordsToPixels(int coordX, int coordY, int & x, int & y);
 void pixelsToCoords(int x, int y, int & coordX, int & coordY);
 
-void initGrid();
+void initGrid(TGrid &grid);
 
 #endif // GRID_H

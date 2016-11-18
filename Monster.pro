@@ -6,9 +6,10 @@ CONFIG -= qt
 QMAKE_CXXFLAGS += -std=c++11 -pedantic -Wall -Wextra
 SOURCES += main.cpp \
     affichage/screen.cpp \
-    grid.cpp \
+    game/grid.cpp \
     affichage/sdl_funcs.cpp \
-    menu.cpp
+    menu/menu.cpp \
+    game/grid_funcs.cpp
 
 LIBS += `sdl-config --libs` -lSDL_image -lSDL_ttf
 
@@ -17,9 +18,10 @@ qtcAddDeployment()
 
 HEADERS += \
     affichage/screen.h \
-    grid.h \
+    game/grid.h \
     affichage/sdl_funcs.h \
-    menu.h
+    menu/menu.h \
+    game/grid_funcs.h
 
 DISTFILES += \
     assets/background.bmp \
