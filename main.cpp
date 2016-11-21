@@ -1,7 +1,8 @@
 #include <iostream>
 #include "affichage/screen.h"
-#include "menu.h"
-#include "grid.h"
+#include "menu/menu.h"
+#include "game/grid.h"
+#include "levelCreator/levelcreator.h"
 
 using namespace std;
 
@@ -14,7 +15,10 @@ int main() {
     int state = menu; // Starting state : menu
 
     // Current level for game state
-    int currentLevel = 1;
+    int currentLevel = 5;
+
+    // Choice for levelCretor
+    int choice = 1;
 
     // SDL initialization
     initSDL();
@@ -28,11 +32,16 @@ int main() {
     initMenu();
 
     // Grid initialization
-    TGrid grid;
-    initGrid(grid);
+
+    initGrid();
+    readLevel(currentLevel);
+
+    //Surfaces game Initialization
+    loadSurfaces();
 
     // Resource loading
     SDL_Surface* gameBackground = loadImage("assets/background.bmp");
+    SDL_Surface* selectLevelBackground = loadImage("assets/niveaux.png");
 
     SDL_Event event;
     int mouseX, mouseY; // Cursor coordinates in pixels
@@ -55,7 +64,7 @@ int main() {
                 pixelsToCoords(mouseX, mouseY, mouseXCoord, mouseYCoord);
                 break;
 
-            case SDL_MOUSEBUTTONDOWN:
+            case SDL_MOUSEBUTTONUP:
                 switch (event.button.button) {
                 case SDL_BUTTON_LEFT:
                     if (state == menu) {
@@ -84,11 +93,20 @@ int main() {
 
         if (state == game) {
 
-            // TODO: game
+            draw(screen);
 
         } else if (state == editor) {
 
-            // TODO: editor
+            if(currentLevel > 0){                    //si on a choisi le niveau on lance l'éditeur
+
+                checkEvent(event,choice);
+                draw(screen);
+                drawCursor(screen,event,choice);
+                saveLevel(currentLevel);
+            } else {                                //sinon on reste a l'accueil
+                setScreenBackground(screen,selectLevelBackground);
+                // levelSelect(mouseX,mouseY,currentLevel);
+            }
 
         }
 
@@ -97,6 +115,8 @@ int main() {
 
     SDL_FreeSurface(screen);
     freeMenuSurfaces();
+    freeSurfaces();
     SDL_FreeSurface(gameBackground);
+    SDL_FreeSurface(selectLevelBackground);
 }
 
