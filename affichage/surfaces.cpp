@@ -30,7 +30,7 @@ SDL_Surface* loadSurface(string name, ColorKey ck) {
 
 void loadSurfaces() {
     surf_background = loadSurface("background.bmp");
-    surf_editorLevelChoice = loadSurface("level.png");
+    surf_editorLevelChoice = loadSurface("niveaux.png");
     surf_haut = loadSurface("haut.png", {0, 255, 255});
     surf_bas = loadSurface("bas.png", {0, 255, 255});
     surf_gauche = loadSurface("gauche.png", {0, 255, 255});

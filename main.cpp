@@ -17,6 +17,7 @@ int main() {
 
     // Current level for game state
     int currentLevel = 1;
+    int choice = 1;
 
     // Direction Initialisation
     Direction direction = NONE;
@@ -46,7 +47,7 @@ int main() {
 
     while (!quit) {
 
-        std::cout << "before : " << state << "  |  ";
+
 
         // Event management
         while (SDL_PollEvent(&event)) {
@@ -74,15 +75,22 @@ int main() {
                         else if (isMouseOnQuitButton(mouseX, mouseY))
                             quit = true;
                     } else if (state == editorMenu) {
-                        if (levelSelect(grid, mouseX, mouseY)) {
+                        if(levelSelect(grid, mouseX, mouseY))
                             state = editorGrid;
-                        }
+
                     } else if (state == game) {
                         if(((mouseX - 95) * (mouseX - 95) + (530 - mouseY) * (530 - mouseY)) <= 25 * 25) {
                             initGrid(grid);
                             loadLevel(grid, currentLevel);
                         }
+                    } else if (state == editorGrid) {
+                        grid[mouseXCoord][mouseYCoord].type = choice;
                     }
+
+                    break;
+                case SDL_BUTTON_RIGHT:
+                    if (state == editorGrid)
+                        grid[mouseXCoord][mouseYCoord].type = 0;
                     break;
                 default: break;
                 }
@@ -108,7 +116,7 @@ int main() {
 
         }
 
-        std::cout << "after : " << state << std::endl;
+
 
         if (state == menu) {
 
@@ -126,7 +134,7 @@ int main() {
         } else if (state == editorGrid) {                //si on a choisi le niveau on lance l'éditeur
             setScreenBackground(screen, surf_background);
             draw(grid, screen);
-            drawCursor(screen, mouseX, mouseY);
+            drawCursor(screen, mouseX, mouseY, choice);
             saveLevel(grid, currentLevel);
 
         } else {

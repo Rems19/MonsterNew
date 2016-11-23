@@ -1,8 +1,6 @@
 #include "editor.h"
 
-int choice = -1;
-
-void checkEditorKeyEvent(SDLKey key) {
+void checkEditorKeyEvent(SDLKey key, int choice) {
     switch (key) {
     case SDLK_a:
         choice = 1;
@@ -33,7 +31,7 @@ void checkEditorKeyEvent(SDLKey key) {
     }
 }
 
-void checkEditorMouseClickEvent(TGrid & grid, Uint8 button, int coordX, int coordY) {
+void checkEditorMouseClickEvent(TGrid & grid, Uint8 button, int coordX, int coordY, int choice) {
     if (button == SDL_BUTTON_LEFT) {
         grid[coordX][coordY].type = choice;
     } else if(button == SDL_BUTTON_RIGHT) {
@@ -41,7 +39,7 @@ void checkEditorMouseClickEvent(TGrid & grid, Uint8 button, int coordX, int coor
     }
 }
 
-void drawCursor(SDL_Surface *s, int mouseX, int mouseY) {
+void drawCursor(SDL_Surface *s, int mouseX, int mouseY, int choice) {
 
     if((mouseX && mouseY) != 0){
         switch (choice){
@@ -78,7 +76,7 @@ bool levelSelect(TGrid & grid, int mouseX, int mouseY) {
     int x = 0;
     int y = 0;
     bool found = false;
-    while (x < 3 && y < 3 && !found) {
+    while (x < 3 && y < 5 && !found) {
         int dx = mouseX - (62 + 90 * x), dy = mouseY - (160 + 80 * y);
         if (dx * dx + dy * dy <= 25 * 25) {
             loadLevel(grid, 3 * y + x + 1);
@@ -90,7 +88,7 @@ bool levelSelect(TGrid & grid, int mouseX, int mouseY) {
             x = 0;
         }
     }
-    return false;
+    return found;
 }
 
 void saveLevel(TGrid grid, int level) {
