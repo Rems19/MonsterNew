@@ -1,7 +1,8 @@
 #include <iostream>
 #include "affichage/screen.h"
-#include "menu.h"
-#include "grid.h"
+#include "menu/menu.h"
+#include "game/grid.h"
+//#include "levelCreator/levelcreator.h"
 
 using namespace std;
 
@@ -16,6 +17,11 @@ int main() {
     // Current level for game state
     int currentLevel = 1;
 
+    // Choice for levelCretor
+    int choice = -1;
+
+    // Direction Initialisation
+    Direction direction = NONE;
     // SDL initialization
     initSDL();
 
@@ -28,11 +34,16 @@ int main() {
     initMenu();
 
     // Grid initialization
-    TGrid grid;
-    initGrid(grid);
+
+    initGrid();
+    readLevel(1);
+
+    //Surfaces game Initialization
+    loadSurfaces();
 
     // Resource loading
     SDL_Surface* gameBackground = loadImage("assets/background.bmp");
+    SDL_Surface* selectLevelBackground = loadImage("assets/niveaux.png");
 
     SDL_Event event;
     int mouseX, mouseY; // Cursor coordinates in pixels
@@ -55,7 +66,7 @@ int main() {
                 pixelsToCoords(mouseX, mouseY, mouseXCoord, mouseYCoord);
                 break;
 
-            case SDL_MOUSEBUTTONDOWN:
+            case SDL_MOUSEBUTTONUP:
                 switch (event.button.button) {
                 case SDL_BUTTON_LEFT:
                     if (state == menu) {
@@ -65,6 +76,18 @@ int main() {
                             state = editor;
                         else if (isMouseOnQuitButton(mouseX, mouseY))
                             quit = true;
+                    } else {
+                        if(state == editor) {
+                            if(choice == -1) {
+                             levelSelect(mouseX,mouseY,choice);
+                             currentLevel = choice;
+                            }
+                        } else if (state == game) {
+                            if(((mouseX-95)*(mouseX-95) + (530-mouseY)*(530-mouseY) )<= 25*25){
+                                initGrid();
+                                readLevel(currentLevel);
+                            }
+                        }
                     }
                     break;
                 default: break;
@@ -72,7 +95,17 @@ int main() {
                 break;
 
             case SDL_KEYDOWN:
-                break;
+                switch(event.key.keysym.sym) {
+                case SDLK_ESCAPE:
+                    if(state == menu) {
+                        quit = true;
+                    } else {
+                        state = menu;
+                    }
+                    break;
+                default:
+                    break;
+                }
 
             default: break;
 
@@ -82,13 +115,32 @@ int main() {
 
         setScreenBackground(screen, state == menu ? getMenuBackground(mouseX, mouseY) : gameBackground);
 
-        if (state == game) {
+        if (state == menu) {
 
-            // TODO: game
+            choice = -1;
+            currentLevel = 1;
+            readLevel(1);
+
+        } else if (state == game) {
+
+            draw(screen);
+            mouvement(event,direction,screen,mouseXCoord,mouseYCoord,currentLevel);
+            levelWin(screen,currentLevel,state);
 
         } else if (state == editor) {
 
-            // TODO: editor
+            if(choice > 0){                    //si on a choisi le niveau on lance l'éditeur
+
+                checkEditorEvent(event,choice);
+                draw(screen);
+                drawCursor(screen,event,choice);
+                saveLevel(currentLevel);
+
+            } else {                                //sinon on reste a l'accueil
+
+                setScreenBackground(screen,selectLevelBackground);
+
+            }
 
         }
 
@@ -97,6 +149,8 @@ int main() {
 
     SDL_FreeSurface(screen);
     freeMenuSurfaces();
+    freeSurfaces();
     SDL_FreeSurface(gameBackground);
+    SDL_FreeSurface(selectLevelBackground);
 }
 
