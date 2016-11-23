@@ -1,10 +1,9 @@
-#include <iostream>
-#include <SDL/SDL.h>
-#include <SDL_Funcs.h>
+#include "surfaces.h"
 
 using namespace std;
 
 SDL_Surface *surf_background;
+SDL_Surface *surf_editorLevelChoice;
 SDL_Surface *surf_haut;
 SDL_Surface *surf_bas;
 SDL_Surface *surf_gauche;
@@ -22,7 +21,7 @@ struct ColorKey {
 };
 
 SDL_Surface* loadSurface(string name) {
-    return load_image("assets/" + name);
+    return loadImage("assets/" + name);
 }
 
 SDL_Surface* loadSurface(string name, ColorKey ck) {
@@ -31,6 +30,7 @@ SDL_Surface* loadSurface(string name, ColorKey ck) {
 
 void loadSurfaces() {
     surf_background = loadSurface("background.bmp");
+    surf_editorLevelChoice = loadSurface("level.png");
     surf_haut = loadSurface("haut.png", {0, 255, 255});
     surf_bas = loadSurface("bas.png", {0, 255, 255});
     surf_gauche = loadSurface("gauche.png", {0, 255, 255});
@@ -46,6 +46,7 @@ void loadSurfaces() {
 
 void freeSurfaces() {
     SDL_FreeSurface(surf_background);
+    SDL_FreeSurface(surf_editorLevelChoice);
     SDL_FreeSurface(surf_haut);
     SDL_FreeSurface(surf_bas);
     SDL_FreeSurface(surf_gauche);

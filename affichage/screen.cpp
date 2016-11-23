@@ -1,4 +1,5 @@
 #include "screen.h"
+#include <iostream>
 
 void initScreen(SDL_Surface* & screen) {
     screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE);

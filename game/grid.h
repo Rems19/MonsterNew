@@ -8,6 +8,7 @@
 #include <fstream>
 #include "affichage/sdl_funcs.h"
 #include "affichage/screen.h"
+#include "affichage/surfaces.h"
 
 // Spacing between the grid and the screen borders
 const int MARGIN_TOP = 32;
@@ -36,29 +37,21 @@ using TGrid = std::array< std::array<caseType, HEIGHT> , WIDTH >;
 void coordsToPixels(int coordX, int coordY, int & x, int & y);
 void pixelsToCoords(int x, int y, int & coordX, int & coordY);
 
-void initGrid();
-void readLevel(int currentLevel);
+void initGrid(TGrid & grid);
+void loadLevel(TGrid & grid, int currentLevel);
 
-void draw(SDL_Surface *s);
+void draw(TGrid grid, SDL_Surface *s);
 
 void loadSurfaces();
 void freeSurfaces();
 
 /*******************************
- *EDITEUR DE NIVEAUX
- *******************************/
-void saveLevel(int currentLevel);
-void checkEditorEvent(SDL_Event &event, int &choix);
-void drawCursor(SDL_Surface *s, SDL_Event &event, int choix);
-void levelSelect(int mouseX, int mouseY, int &currentLevel);
-
-/*******************************
  *LE JEU
  *******************************/
-void moveP(int x, int y, Direction &direction, SDL_Surface *s, int num);
+void moveP(TGrid & grid, int x, int y, Direction &direction, SDL_Surface *s, int num);
 bool sortie(int x, int y, Direction &direction);
-void levelWin( SDL_Surface *s,int &num, int &menu );
-Direction mouvement (SDL_Event &event, Direction &direction,SDL_Surface *s,
+void levelWin(TGrid & grid, SDL_Surface *s,int &num, int &menu );
+Direction mouvement (TGrid & grid, SDL_Event &event, Direction &direction,SDL_Surface *s,
                       int mouseXcoord, int mouseYcoord, int currentLvl);
 
 #endif // GRID_H

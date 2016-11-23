@@ -9,7 +9,8 @@ SOURCES += main.cpp \
     game/grid.cpp \
     affichage/sdl_funcs.cpp \
     menu/menu.cpp \
-    game/grid_funcs.cpp
+    editor/editor.cpp \
+    affichage/surfaces.cpp
 
 LIBS += `sdl-config --libs` -lSDL_image -lSDL_ttf
 
@@ -21,7 +22,8 @@ HEADERS += \
     game/grid.h \
     affichage/sdl_funcs.h \
     menu/menu.h \
-    game/grid_funcs.h
+    editor/editor.h \
+    affichage/surfaces.h
 
 DISTFILES += \
     assets/background.bmp \
@@ -42,4 +44,16 @@ DISTFILES += \
     assets/menuetedit_edit.bmp \
     assets/menuetedit_play.bmp \
     assets/menuetedit_quit.bmp
+
+OTHER_FILES += \
+    levels/niveaux1.txt \
+    levels/niveaux2.txt \
+    levels/niveaux3.txt \
+    levels/niveaux4.txt \
+    levels/niveaux5.txt \
+    levels/niveaux6.txt \
+    levels/niveaux7.txt \
+    levels/niveaux8.txt \
+    levels/niveaux9.txt \
+    assets/niveaux.png
 

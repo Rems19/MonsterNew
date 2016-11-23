@@ -1,10 +1,10 @@
 #ifndef SURFACES_H
 #define SURFACES_H
 
-#include <SDL/SDL.h>
-#include <SDL_Funcs.h>
+#include "sdl_funcs.h"
 
 extern SDL_Surface *surf_background;
+extern SDL_Surface *surf_editorLevelChoice;
 extern SDL_Surface *surf_haut;
 extern SDL_Surface *surf_bas;
 extern SDL_Surface *surf_gauche;
