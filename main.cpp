@@ -17,6 +17,10 @@ int main() {
 
     // Current level for game state
     int currentLevel = 1;
+
+    int levelEdit = 0;
+
+    //  int choice = 1;
     int choice = 1;
 
     // Direction Initialisation
@@ -75,7 +79,7 @@ int main() {
                         else if (isMouseOnQuitButton(mouseX, mouseY))
                             quit = true;
                     } else if (state == editorMenu) {
-                        if(levelSelect(grid, mouseX, mouseY))
+                        if(levelEdit != 0)
                             state = editorGrid;
 
                     } else if (state == game) {
@@ -83,14 +87,7 @@ int main() {
                             initGrid(grid);
                             loadLevel(grid, currentLevel);
                         }
-                    } else if (state == editorGrid) {
-                        grid[mouseXCoord][mouseYCoord].type = choice;
                     }
-
-                    break;
-                case SDL_BUTTON_RIGHT:
-                    if (state == editorGrid)
-                        grid[mouseXCoord][mouseYCoord].type = 0;
                     break;
                 default: break;
                 }
@@ -101,7 +98,10 @@ int main() {
                 case SDLK_ESCAPE:
                     if(state == menu) {
                         quit = true;
-                    } else {
+                    } else {                        
+                        if (state = editorGrid)
+                            saveLevel(grid, levelEdit);
+
                         state = menu;
                     }
                     break;
@@ -116,29 +116,36 @@ int main() {
 
         }
 
-
-
         if (state == menu) {
 
             setScreenBackground(screen, getMenuBackground(mouseX, mouseY));
             currentLevel = 1;
+            levelEdit = 0;
+            initGrid(grid);
             loadLevel(grid, 1);
 
         } else if (state == game) {
 
+            mouvement(grid, event, direction, screen, mouseXCoord, mouseYCoord, currentLevel);
             setScreenBackground(screen, surf_background);
             draw(grid, screen);
-            mouvement(grid, event, direction, screen, mouseXCoord, mouseYCoord, currentLevel);
             levelWin(grid, screen,currentLevel,state);
 
         } else if (state == editorGrid) {                //si on a choisi le niveau on lance l'éditeur
             setScreenBackground(screen, surf_background);
             draw(grid, screen);
             drawCursor(screen, mouseX, mouseY, choice);
-            saveLevel(grid, currentLevel);
+
+            checkEditorKeyEvent(choice);
+            checkEditorMouseClickEvent(grid, mouseXCoord, mouseYCoord, choice);
+
+
 
         } else {
-            setScreenBackground(screen, surf_editorLevelChoice);            
+            setScreenBackground(screen, surf_editorLevelChoice);
+            levelEdit = levelSelect(mouseX, mouseY);
+            if(levelEdit != 0)
+            loadLevel(grid, levelEdit);
         }
 
         updateScreen(screen);

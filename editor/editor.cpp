@@ -1,41 +1,66 @@
 #include "editor.h"
 
-void checkEditorKeyEvent(SDLKey key, int choice) {
-    switch (key) {
-    case SDLK_a:
+void checkEditorKeyEvent(int & choice) {
+
+    Uint8 *keystates = SDL_GetKeyState( NULL );
+
+    if(keystates[SDLK_a]){
         choice = 1;
-        break;
-    case SDLK_z:
+    }
+    if(keystates[SDLK_z]){
         choice = 2;
-        break;
-    case SDLK_e:
+    }
+    if(keystates[SDLK_e]){
         choice = 3;
-        break;
-    case SDLK_r:
+    }
+    if(keystates[SDLK_r]){
         choice = 4;
-        break;
-    case SDLK_UP:
+    }
+    if(keystates[SDLK_UP]){
         choice = 5;
-        break;
-    case SDLK_DOWN:
+    }
+    if(keystates[SDLK_DOWN]){
         choice = 6;
-        break;
-    case SDLK_RIGHT:
+    }
+    if(keystates[SDLK_RIGHT]){
         choice = 7;
-        break;
-    case SDLK_LEFT:
+    }
+    if(keystates[SDLK_LEFT]){
         choice = 8;
-        break;
-    default:
-        break;
     }
 }
 
-void checkEditorMouseClickEvent(TGrid & grid, Uint8 button, int coordX, int coordY, int choice) {
-    if (button == SDL_BUTTON_LEFT) {
-        grid[coordX][coordY].type = choice;
-    } else if(button == SDL_BUTTON_RIGHT) {
+void checkEditorMouseClickEvent(TGrid & grid, int coordX, int coordY, int choice) {
+
+    Uint8 mousestates = SDL_GetMouseState(NULL,NULL);
+
+    if (mousestates &SDL_BUTTON_LEFT) {
+        if(choice < 5) {
+            grid[coordX][coordY].type = choice;
+            grid[coordX][coordY].direction = NONE;
+        } else {
+             grid[coordX][coordY].type = 0;
+
+             switch(choice) {
+             case 5:
+                 grid[coordX][coordY].direction = UP;
+                 break;
+             case 6:
+                 grid[coordX][coordY].direction = DOWN;
+                 break;
+             case 7:
+                 grid[coordX][coordY].direction = RIGHT;
+                 break;
+             case 8:
+                 grid[coordX][coordY].direction = LEFT;
+                 break;
+             }
+        }
+
+    } else if(mousestates & SDL_BUTTON_RMASK) {
         grid[coordX][coordY].type = 0;
+        grid[coordX][coordY].direction = NONE;
+
     }
 }
 
@@ -72,15 +97,14 @@ void drawCursor(SDL_Surface *s, int mouseX, int mouseY, int choice) {
     }
 }
 
-bool levelSelect(TGrid & grid, int mouseX, int mouseY) {
+int levelSelect(int mouseX, int mouseY) {
     int x = 0;
     int y = 0;
-    bool found = false;
-    while (x < 3 && y < 5 && !found) {
+    int found = 0;
+    while (x < 3 && y < 5 && found == 0) {
         int dx = mouseX - (62 + 90 * x), dy = mouseY - (160 + 80 * y);
         if (dx * dx + dy * dy <= 25 * 25) {
-            loadLevel(grid, 3 * y + x + 1);
-            found = true;
+            found = 3 * y + x + 1;
         }
         x++;
         if (x == 3) {
@@ -103,7 +127,24 @@ void saveLevel(TGrid grid, int level) {
     if(fichier) {
         for(int i = 0; i < WIDTH; i++) {
             for(int j = 0; j < HEIGHT; j++) {
+
                 type = grid[i][j].type;
+
+                if(type == 0)
+                     switch(grid[i][j].direction) {
+                     case UP:
+                         type = 5;
+                         break;
+                     case DOWN:
+                         type = 6;
+                         break;
+                     case RIGHT:
+                         type = 7;
+                         break;
+                     case LEFT:
+                         type = 8;
+                         break;
+                     }
                 fichier << type << std::endl;
             }
         }

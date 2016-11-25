@@ -58,6 +58,24 @@ void draw(TGrid grid, SDL_Surface *s) {
 
             coordsToPixels(i, j, x, y);   //on récupère la position en pixel de la case selectionnée
 
+            switch (grid[i][j].direction) {
+
+            case UP:
+                applySurface(x + 5, y + 5, surf_haut, s, NULL);
+                break;
+            case DOWN:
+                applySurface(x + 5, y + 5, surf_bas, s, NULL);
+                break;
+            case RIGHT:
+                applySurface(x + 5, y + 5, surf_droite, s, NULL);
+                break;
+            case LEFT:
+                applySurface(x + 5, y + 5, surf_gauche, s, NULL);
+                break;
+            default:
+                break;
+            }
+
             switch (grid[i][j].type) {
 
             case 1 :
@@ -71,18 +89,6 @@ void draw(TGrid grid, SDL_Surface *s) {
                 break;
             case 4:
                 applySurface(x, y - 10, surf_dormeur, s, NULL);
-                break;
-            case 5:
-                applySurface(x + 5, y + 5, surf_haut, s, NULL);
-                break;
-            case 6:
-                applySurface(x + 5, y + 5, surf_bas, s, NULL);
-                break;
-            case 7:
-                applySurface(x + 5, y + 5, surf_droite, s, NULL);
-                break;
-            case 8:
-                applySurface(x + 5, y + 5, surf_gauche, s, NULL);
                 break;
             }
         }
@@ -105,10 +111,13 @@ void loadLevel(TGrid & grid, int currentLevel) {
             monFlux >> a;
             if(a < 5) {
                 grid[x][y].type = a;
+                grid[x][y].direction = NONE;
             } else {
+                grid[x][y].type = 0;
+
                 switch(a) {
                 case 5:
-                   grid[x][y].direction = UP;
+                    grid[x][y].direction = UP;
                     break;
                 case 6:
                     grid[x][y].direction = DOWN;
@@ -166,6 +175,35 @@ void collisionWith(TGrid & grid, int x, int y) {
     case 4:
         grid[x][y].type = 1;
         break;
+    }
+}
+
+
+void checkColAroundMonster(TGrid & grid, int xCoord, int yCoord) {
+
+
+    if(xCoord + 1 < WIDTH ) {
+        if(grid[xCoord + 1][yCoord].type == 4) {
+            grid[xCoord + 1][yCoord].type = 1;
+        }
+    }
+
+    if(xCoord - 1 > -1 ) {
+        if(grid[xCoord - 1][yCoord].type == 4) {
+            grid[xCoord - 1][yCoord].type = 1;
+        }
+    }
+
+    if(yCoord - 1 > -1 ) {
+        if(grid[xCoord][yCoord - 1].type == 4) {
+            grid[xCoord][yCoord - 1].type = 1;
+        }
+    }
+
+    if(yCoord + 1 < HEIGHT ) {
+        if(grid[xCoord][yCoord + 1].type == 4) {
+            grid[xCoord][yCoord + 1].type = 1;
+        }
     }
 }
 
@@ -349,7 +387,11 @@ void moveP(TGrid & grid, int x, int y, Direction & direction, SDL_Surface *s, in
             draw(grid, s);
             SDL_Flip(s);
             break;
+        default:
+            break;
+
         }
+        checkColAroundMonster(grid, caseFinalx, caseFinaly);
     }
     direction = NONE;
 }
@@ -421,6 +463,7 @@ bool checkWin(TGrid grid){
 
 void levelWin(TGrid & grid, SDL_Surface *s,int &num, int &state ){
     if(checkWin(grid) == 1 && num<6){
+        updateScreen(s);
         SDL_Delay(500);
         setScreenBackground(s,surf_win);
         SDL_Flip(s);
@@ -438,3 +481,4 @@ void levelWin(TGrid & grid, SDL_Surface *s,int &num, int &state ){
         state = 0;
     }
 }
+
