@@ -20,6 +20,8 @@ int main() {
 
     int levelEdit = 0;
 
+    int maxLevel = 10;
+
     //  int choice = 1;
     int choice = 1;
 
@@ -50,8 +52,6 @@ int main() {
     int mouseXCoord, mouseYCoord; // Coordinates of the case pointed by the cursor
 
     while (!quit) {
-
-
 
         // Event management
         while (SDL_PollEvent(&event)) {
@@ -98,20 +98,16 @@ int main() {
                 case SDLK_ESCAPE:
                     if(state == menu) {
                         quit = true;
-                    } else {                        
+                    } else {
                         if (state = editorGrid)
                             saveLevel(grid, levelEdit);
-
                         state = menu;
                     }
                     break;
-                default:
-                    break;
+                default: break;
                 }
                 break;
-
             default: break;
-
             }
 
         }
@@ -129,13 +125,13 @@ int main() {
             mouvement(grid, event, direction, screen, mouseXCoord, mouseYCoord, currentLevel);
             setScreenBackground(screen, surf_background);
             draw(grid, screen);
-            levelWin(grid, screen,currentLevel,state);
+            levelWin(grid, screen, currentLevel, state, maxLevel);
 
         } else if (state == editorGrid) {                //si on a choisi le niveau on lance l'éditeur
+
             setScreenBackground(screen, surf_background);
             draw(grid, screen);
             drawCursor(screen, mouseX, mouseY, choice);
-
             checkEditorKeyEvent(choice);
             checkEditorMouseClickEvent(grid, mouseXCoord, mouseYCoord, choice);
 
@@ -145,7 +141,7 @@ int main() {
             setScreenBackground(screen, surf_editorLevelChoice);
             levelEdit = levelSelect(mouseX, mouseY);
             if(levelEdit != 0)
-            loadLevel(grid, levelEdit);
+                loadLevel(grid, levelEdit);
         }
 
         updateScreen(screen);
