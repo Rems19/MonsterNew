@@ -461,8 +461,8 @@ bool checkWin(TGrid grid){
     return win;
 }
 
-void levelWin(TGrid & grid, SDL_Surface *s,int &num, int &state ){
-    if(checkWin(grid) == 1 && num<6){
+void levelWin(TGrid & grid, SDL_Surface *s,int &num, int &state, int levelMax ){
+    if(checkWin(grid) == 1 && num < levelMax){
         updateScreen(s);
         SDL_Delay(500);
         setScreenBackground(s,surf_win);
@@ -474,7 +474,7 @@ void levelWin(TGrid & grid, SDL_Surface *s,int &num, int &state ){
         initGrid(grid);
         loadLevel(grid, num);
 
-    }else if(checkWin(grid) == 1 && num==6){
+    }else if(checkWin(grid) == 1 && num == levelMax){
         setScreenBackground(s,surf_winEnd);
         SDL_Flip(s);
         SDL_Delay(3000);

@@ -50,7 +50,7 @@ void freeSurfaces();
  *******************************/
 void moveP(TGrid & grid, int x, int y, Direction &direction, SDL_Surface *s, int num);
 bool sortie(int x, int y, Direction &direction);
-void levelWin(TGrid & grid, SDL_Surface *s, int &num, int &menu , int maxLevel);
+void levelWin(TGrid & grid, SDL_Surface *s, int &num, int &menu , int levelMax);
 Direction mouvement (TGrid & grid, SDL_Event &event, Direction &direction,SDL_Surface *s,
                       int mouseXcoord, int mouseYcoord, int currentLvl);
 void checkColAroundMonster(TGrid & grid, int xCoord, int yCoord);

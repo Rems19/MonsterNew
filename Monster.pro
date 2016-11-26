@@ -14,8 +14,7 @@ SOURCES += main.cpp \
 
 LIBS += `sdl-config --libs` -lSDL_image -lSDL_ttf
 
-include(deployment.pri)
-qtcAddDeployment()
+include(deployment.pri)qtcAddDeployment()
 
 HEADERS += \
     affichage/screen.h \
