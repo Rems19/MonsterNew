@@ -402,37 +402,28 @@ Direction mouvement (TGrid & grid, SDL_Event &event, Direction &direction, SDL_S
     int caseDirectionY = 0;
     int caseDirectionX = 0;
 
-    Uint8 mousestates;
-    int sourisX;
-    int sourisY;
+    if(grid[mouseXcoord][mouseYcoord].type == 1 && event.button.button == SDL_BUTTON_LEFT){
 
-    if(grid[mouseXcoord][mouseYcoord].type == 1 && event.button.button == SDL_BUTTON_LEFT) {
+        while(event.type!=SDL_MOUSEBUTTONUP && event.button.button == SDL_BUTTON_LEFT){
 
-        while(event.button.button == SDL_BUTTON_LEFT) {
+            SDL_PollEvent(&event);
 
-            while(SDL_PollEvent( & event)) {
-                mousestates = SDL_GetMouseState(NULL,NULL);
-                sourisX = event.button.x;
-                sourisY = event.button.y;
+            pixelsToCoords(event.button.x, event.button.y, caseDirectionX, caseDirectionY);
 
-                pixelsToCoords(event.button.x, event.button.y, caseDirectionX, caseDirectionY);
-
-
-                if(caseDirectionX == mouseXcoord && caseDirectionY < mouseYcoord){
-                    direction = UP;
-                }
-                if(caseDirectionX == mouseXcoord && caseDirectionY > mouseYcoord){
-                    direction = DOWN;
-                }
-                if(caseDirectionX > mouseXcoord && caseDirectionY == mouseYcoord){
-                    direction = RIGHT;
-                }
-                if(caseDirectionX < mouseXcoord && caseDirectionY == mouseYcoord){
-                    direction = LEFT;
-                }
-                if(caseDirectionX == mouseXcoord && caseDirectionY == mouseYcoord){
-                    direction = NONE;
-                }
+            if(caseDirectionX == mouseXcoord && caseDirectionY < mouseYcoord){
+                direction = UP;
+            }
+            if(caseDirectionX == mouseXcoord && caseDirectionY > mouseYcoord){
+                direction = DOWN;
+            }
+            if(caseDirectionX > mouseXcoord && caseDirectionY == mouseYcoord){
+                direction = RIGHT;
+            }
+            if(caseDirectionX < mouseXcoord && caseDirectionY == mouseYcoord){
+                direction = LEFT;
+            }
+            if(caseDirectionX == mouseXcoord && caseDirectionY == mouseYcoord){
+                direction = NONE;
             }
         }
     }
