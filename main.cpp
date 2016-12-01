@@ -1,4 +1,5 @@
 #include <iostream>
+#include "main.h"
 #include "affichage/screen.h"
 #include "menu/menu.h"
 #include "game/grid.h"
@@ -11,9 +12,7 @@ int main() {
 
     bool quit = false;
 
-    // States
-    const int menu = 0, game = 1, editorMenu = 2, editorGrid = 3;
-    int state = menu; // Starting state : menu
+    State state = MENU; // Starting state : MENU
 
     // Current level for game state
     int currentLevel = 1;
@@ -23,7 +22,7 @@ int main() {
     int maxLevel = 10;
 
     //  int choice = 1;
-    int choice = 1;
+    CaseType choice = MONSTER;
 
     // Direction Initialisation
     Direction direction = NONE;
@@ -71,22 +70,27 @@ int main() {
             case SDL_MOUSEBUTTONUP:
                 switch (event.button.button) {
                 case SDL_BUTTON_LEFT:
-                    if (state == menu) {
+                    if (state == MENU) {
+
                         if (isMouseOnPlayButton(mouseX, mouseY))
-                            state = game;
+                            state = GAME;
                         else if (isMouseOnEditButton(mouseX, mouseY))
-                            state = editorMenu;
+                            state = EDITOR_MENU;
                         else if (isMouseOnQuitButton(mouseX, mouseY))
                             quit = true;
-                    } else if (state == editorMenu) {
-                        if(levelEdit != 0)
-                            state = editorGrid;
 
-                    } else if (state == game) {
-                        if(((mouseX - 95) * (mouseX - 95) + (530 - mouseY) * (530 - mouseY)) <= 25 * 25) {
+                    } else if (state == EDITOR_MENU) {
+
+                        if(levelEdit != 0)
+                            state = EDITOR_GRID;
+
+                    } else if (state == GAME) {
+
+                        if(isMouseOnGameResetButton(mouseX, mouseY)) {
                             initGrid(grid);
                             loadLevel(grid, currentLevel);
                         }
+
                     }
                     break;
                 default: break;
@@ -96,12 +100,12 @@ int main() {
             case SDL_KEYDOWN:
                 switch(event.key.keysym.sym) {
                 case SDLK_ESCAPE:
-                    if(state == menu) {
+                    if(state == MENU) {
                         quit = true;
                     } else {
-                        if (state = editorGrid)
+                        if (state == EDITOR_GRID)
                             saveLevel(grid, levelEdit);
-                        state = menu;
+                        state = MENU;
                     }
                     break;
                 default: break;
@@ -112,7 +116,7 @@ int main() {
 
         }
 
-        if (state == menu) {
+        if (state == MENU) {
 
             setScreenBackground(screen, getMenuBackground(mouseX, mouseY));
             currentLevel = 1;
@@ -120,14 +124,14 @@ int main() {
             initGrid(grid);
             loadLevel(grid, 1);
 
-        } else if (state == game) {
+        } else if (state == GAME) {
 
             mouvement(grid, event, direction, screen, mouseXCoord, mouseYCoord, currentLevel);
             setScreenBackground(screen, surf_background);
             draw(grid, screen);
             levelWin(grid, screen, currentLevel, state, maxLevel);
 
-        } else if (state == editorGrid) {                //si on a choisi le niveau on lance l'éditeur
+        } else if (state == EDITOR_GRID) {                //si on a choisi le niveau on lance l'éditeur
 
             setScreenBackground(screen, surf_background);
             draw(grid, screen);

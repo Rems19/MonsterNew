@@ -30,6 +30,12 @@ bool isMouseOnQuitButton(int mouseX, int mouseY) {
     return dx * dx + dy * dy <= 26 * 26;
 }
 
+bool isMouseOnGameResetButton(int mouseX, int mouseY) {
+    // Reset button center : 95, 530   Radius : 25
+    int dx = mouseX - 95, dy = mouseY - 530;
+    return dx * dx + dy * dy <= 26 * 26;
+}
+
 SDL_Surface* getMenuBackground(int mouseX, int mouseY) {
 
     if (isMouseOnPlayButton(mouseX, mouseY)) {

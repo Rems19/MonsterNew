@@ -15,35 +15,10 @@ void pixelsToCoords(int x, int y, int & coordX, int & coordY) {
     }
 }
 
-Direction coordToDirection(TGrid grid, int x, int y) {
-
-    Direction dirCase;
-
-    switch(grid[x][y].type) {
-    case 5:
-        dirCase = UP;
-        break;
-    case 6:
-        dirCase = DOWN;
-        break;
-    case 7:
-        dirCase = RIGHT;
-        break;
-    case 8:
-        dirCase = LEFT;
-        break;
-    default:
-        dirCase = NONE;
-        break;
-    }
-    return dirCase;
-
-}
-
 void initGrid(TGrid & grid) {
     for (int xCoord = 0; xCoord < WIDTH; xCoord++) {
         for (int yCoord = 0; yCoord < HEIGHT; yCoord++) {
-            grid[xCoord][yCoord].type = 0;
+            grid[xCoord][yCoord].type = EMPTY;
             grid[xCoord][yCoord].direction = NONE;
         }
     }
@@ -78,18 +53,19 @@ void draw(TGrid grid, SDL_Surface *s) {
 
             switch (grid[i][j].type) {
 
-            case 1 :
+            case MONSTER:
                 applySurface(x, y, surf_monstre, s, NULL);
                 break;
-            case 2:
+            case ICE:
                 applySurface(x, y - 14, surf_glacon, s, NULL);
                 break;
-            case 3:
+            case BOOK:
                 applySurface(x, y - 14, surf_livre, s, NULL);
                 break;
-            case 4:
+            case SLEEPER:
                 applySurface(x, y - 10, surf_dormeur, s, NULL);
                 break;
+            default: break;
             }
         }
     }
@@ -98,7 +74,8 @@ void draw(TGrid grid, SDL_Surface *s) {
 void loadLevel(TGrid & grid, int currentLevel) {
 
     std::string lvl;
-    int a ;
+    int n;
+    CaseType caseType;
     int x = 0;
     int y = 0;
 
@@ -108,27 +85,27 @@ void loadLevel(TGrid & grid, int currentLevel) {
 
     if(monFlux) {
         while(!monFlux.eof()) { //On lit une ligne complète
-            monFlux >> a;
-            if(a < 5) {
-                grid[x][y].type = a;
-                grid[x][y].direction = NONE;
-            } else {
-                grid[x][y].type = 0;
+            monFlux >> n;
+            caseType = (CaseType) n;
 
-                switch(a) {
-                case 5:
-                    grid[x][y].direction = UP;
-                    break;
-                case 6:
-                    grid[x][y].direction = DOWN;
-                    break;
-                case 7:
-                    grid[x][y].direction = RIGHT;
-                    break;
-                case 8:
-                    grid[x][y].direction = LEFT;
-                    break;
-                }
+            grid[x][y].type = EMPTY;
+            switch(caseType) {
+            case UP_E:
+                grid[x][y].direction = UP;
+                break;
+            case DOWN_E:
+                grid[x][y].direction = DOWN;
+                break;
+            case RIGHT_E:
+                grid[x][y].direction = RIGHT;
+                break;
+            case LEFT_E:
+                grid[x][y].direction = LEFT;
+                break;
+            default:
+                grid[x][y].type = caseType;
+                grid[x][y].direction = NONE;
+                break;
             }
 
             if(y + 1  < HEIGHT) {
@@ -169,12 +146,13 @@ bool sortie(int x, int y, Direction &direction){
 
 void collisionWith(TGrid & grid, int x, int y) {
     switch(grid[x][y].type) {
-    case 2:
-        grid[x][y].type = 0;
+    case ICE:
+        grid[x][y].type = EMPTY;
         break;
-    case 4:
-        grid[x][y].type = 1;
+    case SLEEPER:
+        grid[x][y].type = MONSTER;
         break;
+    default: break;
     }
 }
 
@@ -183,26 +161,26 @@ void checkColAroundMonster(TGrid & grid, int xCoord, int yCoord) {
 
 
     if(xCoord + 1 < WIDTH ) {
-        if(grid[xCoord + 1][yCoord].type == 4) {
-            grid[xCoord + 1][yCoord].type = 1;
+        if(grid[xCoord + 1][yCoord].type == SLEEPER) {
+            grid[xCoord + 1][yCoord].type = MONSTER;
         }
     }
 
     if(xCoord - 1 > -1 ) {
-        if(grid[xCoord - 1][yCoord].type == 4) {
-            grid[xCoord - 1][yCoord].type = 1;
+        if(grid[xCoord - 1][yCoord].type == SLEEPER) {
+            grid[xCoord - 1][yCoord].type = MONSTER;
         }
     }
 
     if(yCoord - 1 > -1 ) {
-        if(grid[xCoord][yCoord - 1].type == 4) {
-            grid[xCoord][yCoord - 1].type = 1;
+        if(grid[xCoord][yCoord - 1].type == SLEEPER) {
+            grid[xCoord][yCoord - 1].type = MONSTER;
         }
     }
 
     if(yCoord + 1 < HEIGHT ) {
-        if(grid[xCoord][yCoord + 1].type == 4) {
-            grid[xCoord][yCoord + 1].type = 1;
+        if(grid[xCoord][yCoord + 1].type == SLEEPER) {
+            grid[xCoord][yCoord + 1].type = MONSTER;
         }
     }
 }
@@ -222,7 +200,7 @@ void moveP(TGrid & grid, int x, int y, Direction & direction, SDL_Surface *s, in
 
     int delay = 1; // Changer la vitesse de l'animation ici
 
-    int nextCaseObject;
+    CaseType nextCaseType;
     Direction caseDir;
 
     if(direction == RIGHT){
@@ -230,15 +208,15 @@ void moveP(TGrid & grid, int x, int y, Direction & direction, SDL_Surface *s, in
         bool stop = false;
         int dx = 0;
         while (!stop) {
-            nextCaseObject = grid[x + dx + 1][y].type;
+            nextCaseType = grid[x + dx + 1][y].type;
             caseDir = grid[x + dx][y].direction;
-            if ((caseDir != NONE && caseDir != RIGHT) || ( nextCaseObject != 0 && nextCaseObject < 5)  || x + dx == WIDTH - 1)
+            if ((caseDir != NONE && caseDir != RIGHT) || ( nextCaseType != EMPTY)  || x + dx == WIDTH - 1)
                 stop = true;
             else dx++;
         }
         caseFinalx += dx;
 
-        grid[x][y].type = 0;
+        grid[x][y].type = EMPTY;
         coordsToPixels(caseFinalx, caseFinaly, coordCaseFinalx, coordCaseFinaly);
 
         while(i < coordCaseFinalx){
@@ -250,7 +228,7 @@ void moveP(TGrid & grid, int x, int y, Direction & direction, SDL_Surface *s, in
             SDL_Delay(delay);
         }
 
-        grid[caseFinalx][caseFinaly].type = 1;
+        grid[caseFinalx][caseFinaly].type = MONSTER;
     }
 
     if(direction == DOWN){
@@ -258,15 +236,15 @@ void moveP(TGrid & grid, int x, int y, Direction & direction, SDL_Surface *s, in
         bool stop = false;
         int dy = 0;
         while (!stop) {
-            nextCaseObject = grid[x][y + dy + 1].type;
+            nextCaseType = grid[x][y + dy + 1].type;
             caseDir = grid[x][y + dy].direction;
-            if ((caseDir != NONE && caseDir != DOWN) || ( nextCaseObject != 0 && nextCaseObject < 5) || y + dy == HEIGHT - 1)
+            if ((caseDir != NONE && caseDir != DOWN) || ( nextCaseType != EMPTY) || y + dy == HEIGHT - 1)
                 stop = true;
             else dy++;
         }
         caseFinaly += dy;
 
-        grid[x][y].type = 0;
+        grid[x][y].type = EMPTY;
         coordsToPixels(caseFinalx, caseFinaly, coordCaseFinalx, coordCaseFinaly);
 
         while(j < coordCaseFinaly){
@@ -277,7 +255,7 @@ void moveP(TGrid & grid, int x, int y, Direction & direction, SDL_Surface *s, in
             SDL_Flip(s);
             SDL_Delay(delay);
         }
-        grid[caseFinalx][caseFinaly].type = 1;
+        grid[caseFinalx][caseFinaly].type = MONSTER;
 
 
     }
@@ -287,15 +265,15 @@ void moveP(TGrid & grid, int x, int y, Direction & direction, SDL_Surface *s, in
         bool stop = false;
         int dy = 0;
         while (!stop) {
-            nextCaseObject = grid[x][y - dy - 1].type;
+            nextCaseType = grid[x][y - dy - 1].type;
             caseDir = grid[x][y - dy].direction;
-            if ((caseDir != NONE && caseDir != UP) || ( nextCaseObject != 0 && nextCaseObject < 5) || y - dy == 0)
+            if ((caseDir != NONE && caseDir != UP) || ( nextCaseType != EMPTY) || y - dy == 0)
                 stop = true;
             else dy++;
         }
         caseFinaly -= dy;
 
-        grid[x][y].type = 0;
+        grid[x][y].type = EMPTY;
         coordsToPixels(caseFinalx, caseFinaly, coordCaseFinalx, coordCaseFinaly);
 
 
@@ -309,7 +287,7 @@ void moveP(TGrid & grid, int x, int y, Direction & direction, SDL_Surface *s, in
 
         }
 
-        grid[caseFinalx][caseFinaly].type = 1;
+        grid[caseFinalx][caseFinaly].type = MONSTER;
 
 
     }
@@ -319,15 +297,15 @@ void moveP(TGrid & grid, int x, int y, Direction & direction, SDL_Surface *s, in
         bool stop = false;
         int dx = 0;
         while (!stop) {
-            nextCaseObject = grid[x - dx - 1][y].type;
+            nextCaseType = grid[x - dx - 1][y].type;
             caseDir = grid [x - dx][y].direction;
-            if ((caseDir != NONE && caseDir != LEFT) || ( nextCaseObject != 0 && nextCaseObject < 5) || x - dx == 0)
+            if ((caseDir != NONE && caseDir != LEFT) || ( nextCaseType != EMPTY) || x - dx == 0)
                 stop = true;
             else dx++;
         }
         caseFinalx -= dx;
 
-        grid[x][y].type = 0;
+        grid[x][y].type = EMPTY;
         coordsToPixels(caseFinalx, caseFinaly, coordCaseFinalx, coordCaseFinaly);
 
         while(i > coordCaseFinalx){
@@ -338,7 +316,7 @@ void moveP(TGrid & grid, int x, int y, Direction & direction, SDL_Surface *s, in
             SDL_Flip(s);
             SDL_Delay(delay);
         }
-        grid[caseFinalx][caseFinaly].type = 1;
+        grid[caseFinalx][caseFinaly].type = MONSTER;
     }
 
     /***********************************************************************************
@@ -416,34 +394,34 @@ Direction mouvement (TGrid & grid, SDL_Event &event, Direction &direction, SDL_S
             if(caseDirectionX == mouseXcoord && caseDirectionY > mouseYcoord){
                 direction = DOWN;
             }
-            if(caseDirectionX > mouseXcoord && caseDirectionY == mouseYcoord){
+            if(caseDirectionX > mouseXcoord && caseDirectionY == mouseYcoord) {
                 direction = RIGHT;
             }
-            if(caseDirectionX < mouseXcoord && caseDirectionY == mouseYcoord){
+            if(caseDirectionX < mouseXcoord && caseDirectionY == mouseYcoord) {
                 direction = LEFT;
             }
-            if(caseDirectionX == mouseXcoord && caseDirectionY == mouseYcoord){
+            if(caseDirectionX == mouseXcoord && caseDirectionY == mouseYcoord) {
                 direction = NONE;
             }
         }
     }
 
-    while(direction !=NONE){
-        moveP(grid, mouseXcoord,mouseYcoord,direction,s,currentLvl);
+    while(direction != NONE) {
+        moveP(grid, mouseXcoord, mouseYcoord, direction, s, currentLvl);
     }
 
     return direction;
 }
 
-bool checkWin(TGrid grid){
+bool checkWin(TGrid grid) {
     bool win = true;
     int i = 0;
     int j = 0;
 
-    while (win == true && i<HEIGHT) {
+    while (win == true && i < HEIGHT) {
         j = 0;
-        while (win == true && j<WIDTH){
-            if (grid[j][i].type == 4){
+        while (win == true && j < WIDTH) {
+            if (grid[j][i].type == SLEEPER) {
                 win = false;
             }
             j++;
@@ -453,8 +431,8 @@ bool checkWin(TGrid grid){
     return win;
 }
 
-void levelWin(TGrid & grid, SDL_Surface *s,int &num, int &state, int levelMax ){
-    if(checkWin(grid) == 1 && num < levelMax){
+void levelWin(TGrid & grid, SDL_Surface *s, int &num, State &state, int levelMax) {
+    if(checkWin(grid) == 1 && num < levelMax) {
         updateScreen(s);
         SDL_Delay(500);
         setScreenBackground(s,surf_win);
@@ -466,11 +444,11 @@ void levelWin(TGrid & grid, SDL_Surface *s,int &num, int &state, int levelMax ){
         initGrid(grid);
         loadLevel(grid, num);
 
-    }else if(checkWin(grid) == 1 && num == levelMax){
+    } else if(checkWin(grid) == 1 && num == levelMax) {
         setScreenBackground(s,surf_winEnd);
         SDL_Flip(s);
         SDL_Delay(3000);
-        state = 0;
+        state = MENU;
     }
 }
 

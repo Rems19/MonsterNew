@@ -1,64 +1,63 @@
 #include "editor.h"
 
-void checkEditorKeyEvent(int & choice) {
+void checkEditorKeyEvent(CaseType & choice) {
 
     Uint8 *keystates = SDL_GetKeyState( NULL );
 
     if(keystates[SDLK_a]){
-        choice = 1;
+        choice = MONSTER;
     }
     if(keystates[SDLK_z]){
-        choice = 2;
+        choice = ICE;
     }
     if(keystates[SDLK_e]){
-        choice = 3;
+        choice = BOOK;
     }
     if(keystates[SDLK_r]){
-        choice = 4;
+        choice = SLEEPER;
     }
     if(keystates[SDLK_UP]){
-        choice = 5;
+        choice = UP_E;
     }
     if(keystates[SDLK_DOWN]){
-        choice = 6;
+        choice = DOWN_E;
     }
     if(keystates[SDLK_RIGHT]){
-        choice = 7;
+        choice = RIGHT_E;
     }
     if(keystates[SDLK_LEFT]){
-        choice = 8;
+        choice = LEFT_E;
     }
 }
 
-void checkEditorMouseClickEvent(TGrid & grid, int coordX, int coordY, int choice) {
+void checkEditorMouseClickEvent(TGrid & grid, int coordX, int coordY, CaseType choice) {
 
     Uint8 mousestates = SDL_GetMouseState(NULL,NULL);
 
     if (mousestates &SDL_BUTTON_LEFT) {
-        if(choice < 5) {
+
+        grid[coordX][coordY].type = EMPTY;
+        switch(choice) {
+        case UP_E:
+            grid[coordX][coordY].direction = UP;
+            break;
+        case DOWN_E:
+            grid[coordX][coordY].direction = DOWN;
+            break;
+        case RIGHT_E:
+            grid[coordX][coordY].direction = RIGHT;
+            break;
+        case LEFT_E:
+            grid[coordX][coordY].direction = LEFT;
+            break;
+        default:
             grid[coordX][coordY].type = choice;
             grid[coordX][coordY].direction = NONE;
-        } else {
-             grid[coordX][coordY].type = 0;
-
-             switch(choice) {
-             case 5:
-                 grid[coordX][coordY].direction = UP;
-                 break;
-             case 6:
-                 grid[coordX][coordY].direction = DOWN;
-                 break;
-             case 7:
-                 grid[coordX][coordY].direction = RIGHT;
-                 break;
-             case 8:
-                 grid[coordX][coordY].direction = LEFT;
-                 break;
-             }
+            break;
         }
 
     } else if(mousestates & SDL_BUTTON_RMASK) {
-        grid[coordX][coordY].type = 0;
+        grid[coordX][coordY].type = EMPTY;
         grid[coordX][coordY].direction = NONE;
 
     }
@@ -66,31 +65,31 @@ void checkEditorMouseClickEvent(TGrid & grid, int coordX, int coordY, int choice
 
 void drawCursor(SDL_Surface *s, int mouseX, int mouseY, int choice) {
 
-    if((mouseX && mouseY) != 0){
-        switch (choice){
+    if((mouseX && mouseY) != 0) {
+        switch (choice) {
 
-        case 1 :
+        case MONSTER :
             applySurface(mouseX, mouseY, surf_monstre, s, NULL);
             break;
-        case 2:
+        case ICE:
             applySurface(mouseX, mouseY, surf_glacon, s, NULL);
             break;
-        case 3:
+        case BOOK:
             applySurface(mouseX, mouseY, surf_livre, s, NULL);
             break;
-        case 4:
+        case SLEEPER:
             applySurface(mouseX, mouseY, surf_dormeur, s, NULL);
             break;
-        case 5:
+        case UP_E:
             applySurface(mouseX, mouseY, surf_haut, s, NULL);
             break;
-        case 6:
+        case DOWN_E:
             applySurface(mouseX, mouseY, surf_bas, s, NULL);
             break;
-        case 7:
+        case RIGHT_E:
             applySurface(mouseX, mouseY, surf_droite, s, NULL);
             break;
-        case 8:
+        case LEFT_E:
             applySurface(mouseX, mouseY, surf_gauche, s, NULL);
             break;
         }
@@ -130,20 +129,21 @@ void saveLevel(TGrid grid, int level) {
 
                 type = grid[i][j].type;
 
-                if(type == 0)
+                if(type == EMPTY)
                      switch(grid[i][j].direction) {
                      case UP:
-                         type = 5;
+                         type = UP_E;
                          break;
                      case DOWN:
-                         type = 6;
+                         type = DOWN_E;
                          break;
                      case RIGHT:
-                         type = 7;
+                         type = RIGHT_E;
                          break;
                      case LEFT:
-                         type = 8;
+                         type = LEFT_E;
                          break;
+                     default: break;
                      }
                 fichier << type << std::endl;
             }

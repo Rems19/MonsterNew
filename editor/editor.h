@@ -4,8 +4,8 @@
 #include "affichage/sdl_funcs.h"
 #include "game/grid.h"
 
-void checkEditorKeyEvent(int & choice);
-void checkEditorMouseClickEvent(TGrid &grid, int coordX, int coordY, int choice);
+void checkEditorKeyEvent(CaseType & choice);
+void checkEditorMouseClickEvent(TGrid &grid, int coordX, int coordY, CaseType choice);
 void saveLevel(TGrid grid, int level);
 void drawCursor(SDL_Surface *s, int mouseX, int mouseY, int choice);
 int levelSelect(int mouseX, int mouseY);

@@ -22,7 +22,8 @@ HEADERS += \
     affichage/sdl_funcs.h \
     menu/menu.h \
     editor/editor.h \
-    affichage/surfaces.h
+    affichage/surfaces.h \
+    main.h
 
 DISTFILES += \
     assets/background.bmp \
