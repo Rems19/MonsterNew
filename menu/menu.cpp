@@ -5,6 +5,17 @@ SDL_Surface* menuBackground_play;
 SDL_Surface* menuBackground_edit;
 SDL_Surface* menuBackground_quit;
 
+/****************** Nom de la fonction **********************
+* NOM_FONCTION                                              *
+******************** Auteur , Dates *************************
+* Nom/Date : Éventuellement la version                      *
+********************* Description ***************************
+* Vous décrivez ici ce que fait cette fonction              *
+*********************** Entrées *****************************
+* Vous décrivez ici les données en entrée de la fonction    *
+*********************** Sorties *****************************
+* Vous détaillez ici ce que renvoie la fonction             *
+************************************************************/
 void initMenu() {
     menuBackground_base = loadImage("assets/menuetedit.bmp");
     menuBackground_play = loadImage("assets/menuetedit_play.bmp");
@@ -12,30 +23,85 @@ void initMenu() {
     menuBackground_quit = loadImage("assets/menuetedit_quit.bmp");
 }
 
+/****************** Nom de la fonction **********************
+* NOM_FONCTION                                              *
+******************** Auteur , Dates *************************
+* Nom/Date : Éventuellement la version                      *
+********************* Description ***************************
+* Vous décrivez ici ce que fait cette fonction              *
+*********************** Entrées *****************************
+* Vous décrivez ici les données en entrée de la fonction    *
+*********************** Sorties *****************************
+* Vous détaillez ici ce que renvoie la fonction             *
+************************************************************/
 bool isMouseOnPlayButton(int mouseX, int mouseY) {
     // Play button center : 148, 311   Radius : 53
     int dx = mouseX - 148, dy = mouseY - 311;
     return dx * dx + dy * dy <= 53 * 53;
 }
 
+/****************** Nom de la fonction **********************
+* NOM_FONCTION                                              *
+******************** Auteur , Dates *************************
+* Nom/Date : Éventuellement la version                      *
+********************* Description ***************************
+* Vous décrivez ici ce que fait cette fonction              *
+*********************** Entrées *****************************
+* Vous décrivez ici les données en entrée de la fonction    *
+*********************** Sorties *****************************
+* Vous détaillez ici ce que renvoie la fonction             *
+************************************************************/
 bool isMouseOnEditButton(int mouseX, int mouseY) {
     // Edit button center : 186, 226   Radius : 26
     int dx = mouseX - 186, dy = mouseY - 226;
     return dx * dx + dy * dy <= 26 * 26;
 }
 
+/****************** Nom de la fonction **********************
+* NOM_FONCTION                                              *
+******************** Auteur , Dates *************************
+* Nom/Date : Éventuellement la version                      *
+********************* Description ***************************
+* Vous décrivez ici ce que fait cette fonction              *
+*********************** Entrées *****************************
+* Vous décrivez ici les données en entrée de la fonction    *
+*********************** Sorties *****************************
+* Vous détaillez ici ce que renvoie la fonction             *
+************************************************************/
 bool isMouseOnQuitButton(int mouseX, int mouseY) {
     // Quit button center : 220, 370   Radius : 26
     int dx = mouseX - 220, dy = mouseY - 370;
     return dx * dx + dy * dy <= 26 * 26;
 }
 
+/****************** Nom de la fonction **********************
+* NOM_FONCTION                                              *
+******************** Auteur , Dates *************************
+* Nom/Date : Éventuellement la version                      *
+********************* Description ***************************
+* Vous décrivez ici ce que fait cette fonction              *
+*********************** Entrées *****************************
+* Vous décrivez ici les données en entrée de la fonction    *
+*********************** Sorties *****************************
+* Vous détaillez ici ce que renvoie la fonction             *
+************************************************************/
 bool isMouseOnGameResetButton(int mouseX, int mouseY) {
     // Reset button center : 95, 530   Radius : 25
     int dx = mouseX - 95, dy = mouseY - 530;
     return dx * dx + dy * dy <= 26 * 26;
 }
 
+/****************** Nom de la fonction **********************
+* NOM_FONCTION                                              *
+******************** Auteur , Dates *************************
+* Nom/Date : Éventuellement la version                      *
+********************* Description ***************************
+* Vous décrivez ici ce que fait cette fonction              *
+*********************** Entrées *****************************
+* Vous décrivez ici les données en entrée de la fonction    *
+*********************** Sorties *****************************
+* Vous détaillez ici ce que renvoie la fonction             *
+************************************************************/
 SDL_Surface* getMenuBackground(int mouseX, int mouseY) {
 
     if (isMouseOnPlayButton(mouseX, mouseY)) {
@@ -53,6 +119,17 @@ SDL_Surface* getMenuBackground(int mouseX, int mouseY) {
     return menuBackground_base;
 }
 
+/****************** Nom de la fonction **********************
+* NOM_FONCTION                                              *
+******************** Auteur , Dates *************************
+* Nom/Date : Éventuellement la version                      *
+********************* Description ***************************
+* Vous décrivez ici ce que fait cette fonction              *
+*********************** Entrées *****************************
+* Vous décrivez ici les données en entrée de la fonction    *
+*********************** Sorties *****************************
+* Vous détaillez ici ce que renvoie la fonction             *
+************************************************************/
 void freeMenuSurfaces() {
     SDL_FreeSurface(menuBackground_base);
     SDL_FreeSurface(menuBackground_play);

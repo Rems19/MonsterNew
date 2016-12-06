@@ -1,10 +1,32 @@
 #include "grid.h"
 
+/****************** Nom de la fonction **********************
+* NOM_FONCTION                                              *
+******************** Auteur , Dates *************************
+* Nom/Date : Éventuellement la version                      *
+********************* Description ***************************
+* Vous décrivez ici ce que fait cette fonction              *
+*********************** Entrées *****************************
+* Vous décrivez ici les données en entrée de la fonction    *
+*********************** Sorties *****************************
+* Vous détaillez ici ce que renvoie la fonction             *
+************************************************************/
 void coordsToPixels(int coordX, int coordY, int & x, int & y) {
     x = MARGIN_LEFT + coordX * CASE_WIDTH;
     y = MARGIN_TOP + coordY * CASE_HEIGHT;
 }
 
+/****************** Nom de la fonction **********************
+* NOM_FONCTION                                              *
+******************** Auteur , Dates *************************
+* Nom/Date : Éventuellement la version                      *
+********************* Description ***************************
+* Vous décrivez ici ce que fait cette fonction              *
+*********************** Entrées *****************************
+* Vous décrivez ici les données en entrée de la fonction    *
+*********************** Sorties *****************************
+* Vous détaillez ici ce que renvoie la fonction             *
+************************************************************/
 void pixelsToCoords(int x, int y, int & coordX, int & coordY) {
     if (x - MARGIN_LEFT < 0 || x > MARGIN_LEFT + WIDTH * CASE_WIDTH || y - MARGIN_TOP < 0 || y > MARGIN_TOP + HEIGHT * CASE_HEIGHT) {
         coordX = -1;
@@ -15,6 +37,17 @@ void pixelsToCoords(int x, int y, int & coordX, int & coordY) {
     }
 }
 
+/****************** Nom de la fonction **********************
+* NOM_FONCTION                                              *
+******************** Auteur , Dates *************************
+* Nom/Date : Éventuellement la version                      *
+********************* Description ***************************
+* Vous décrivez ici ce que fait cette fonction              *
+*********************** Entrées *****************************
+* Vous décrivez ici les données en entrée de la fonction    *
+*********************** Sorties *****************************
+* Vous détaillez ici ce que renvoie la fonction             *
+************************************************************/
 void initGrid(TGrid & grid) {
     for (int xCoord = 0; xCoord < WIDTH; xCoord++) {
         for (int yCoord = 0; yCoord < HEIGHT; yCoord++) {
@@ -24,6 +57,17 @@ void initGrid(TGrid & grid) {
     }
 }
 
+/****************** Nom de la fonction **********************
+* NOM_FONCTION                                              *
+******************** Auteur , Dates *************************
+* Nom/Date : Éventuellement la version                      *
+********************* Description ***************************
+* Vous décrivez ici ce que fait cette fonction              *
+*********************** Entrées *****************************
+* Vous décrivez ici les données en entrée de la fonction    *
+*********************** Sorties *****************************
+* Vous détaillez ici ce que renvoie la fonction             *
+************************************************************/
 void draw(TGrid grid, SDL_Surface *s) {
     int x = -1;
     int y = -1;
@@ -71,6 +115,17 @@ void draw(TGrid grid, SDL_Surface *s) {
     }
 }
 
+/****************** Nom de la fonction **********************
+* NOM_FONCTION                                              *
+******************** Auteur , Dates *************************
+* Nom/Date : Éventuellement la version                      *
+********************* Description ***************************
+* Vous décrivez ici ce que fait cette fonction              *
+*********************** Entrées *****************************
+* Vous décrivez ici les données en entrée de la fonction    *
+*********************** Sorties *****************************
+* Vous détaillez ici ce que renvoie la fonction             *
+************************************************************/
 void loadLevel(TGrid & grid, int currentLevel) {
 
     std::string lvl;
@@ -84,7 +139,7 @@ void loadLevel(TGrid & grid, int currentLevel) {
     std::ifstream monFlux(lvl);  //Ouverture d'un fichier en lecture
 
     if(monFlux) {
-        while(!monFlux.eof()) { //On lit une ligne complète
+        while(!monFlux.eof()) {
             monFlux >> n;
             caseType = (CaseType) n;
 
@@ -121,6 +176,17 @@ void loadLevel(TGrid & grid, int currentLevel) {
     monFlux.close();
 }
 
+/****************** Nom de la fonction **********************
+* NOM_FONCTION                                              *
+******************** Auteur , Dates *************************
+* Nom/Date : Éventuellement la version                      *
+********************* Description ***************************
+* Vous décrivez ici ce que fait cette fonction              *
+*********************** Entrées *****************************
+* Vous décrivez ici les données en entrée de la fonction    *
+*********************** Sorties *****************************
+* Vous détaillez ici ce que renvoie la fonction             *
+************************************************************/
 bool sortie(int x, int y, Direction &direction){
 
     bool sortie = false;
@@ -144,6 +210,17 @@ bool sortie(int x, int y, Direction &direction){
     return sortie;
 }
 
+/****************** Nom de la fonction **********************
+* NOM_FONCTION                                              *
+******************** Auteur , Dates *************************
+* Nom/Date : Éventuellement la version                      *
+********************* Description ***************************
+* Vous décrivez ici ce que fait cette fonction              *
+*********************** Entrées *****************************
+* Vous décrivez ici les données en entrée de la fonction    *
+*********************** Sorties *****************************
+* Vous détaillez ici ce que renvoie la fonction             *
+************************************************************/
 void collisionWith(TGrid & grid, int x, int y) {
     switch(grid[x][y].type) {
     case ICE:
@@ -156,7 +233,17 @@ void collisionWith(TGrid & grid, int x, int y) {
     }
 }
 
-
+/****************** Nom de la fonction **********************
+* NOM_FONCTION                                              *
+******************** Auteur , Dates *************************
+* Nom/Date : Éventuellement la version                      *
+********************* Description ***************************
+* Vous décrivez ici ce que fait cette fonction              *
+*********************** Entrées *****************************
+* Vous décrivez ici les données en entrée de la fonction    *
+*********************** Sorties *****************************
+* Vous détaillez ici ce que renvoie la fonction             *
+************************************************************/
 void checkColAroundMonster(TGrid & grid, int xCoord, int yCoord) {
 
 
@@ -185,6 +272,17 @@ void checkColAroundMonster(TGrid & grid, int xCoord, int yCoord) {
     }
 }
 
+/****************** Nom de la fonction **********************
+* NOM_FONCTION                                              *
+******************** Auteur , Dates *************************
+* Nom/Date : Éventuellement la version                      *
+********************* Description ***************************
+* Vous décrivez ici ce que fait cette fonction              *
+*********************** Entrées *****************************
+* Vous décrivez ici les données en entrée de la fonction    *
+*********************** Sorties *****************************
+* Vous détaillez ici ce que renvoie la fonction             *
+************************************************************/
 void moveP(TGrid & grid, int x, int y, Direction & direction, SDL_Surface *s, int num){
 
     int i;
@@ -374,7 +472,17 @@ void moveP(TGrid & grid, int x, int y, Direction & direction, SDL_Surface *s, in
     direction = NONE;
 }
 
-
+/****************** Nom de la fonction **********************
+* NOM_FONCTION                                              *
+******************** Auteur , Dates *************************
+* Nom/Date : Éventuellement la version                      *
+********************* Description ***************************
+* Vous décrivez ici ce que fait cette fonction              *
+*********************** Entrées *****************************
+* Vous décrivez ici les données en entrée de la fonction    *
+*********************** Sorties *****************************
+* Vous détaillez ici ce que renvoie la fonction             *
+************************************************************/
 Direction mouvement (TGrid & grid, SDL_Event &event, Direction &direction, SDL_Surface *s, int mouseXcoord, int mouseYcoord, int currentLvl) {
 
     int caseDirectionY = 0;
@@ -413,6 +521,17 @@ Direction mouvement (TGrid & grid, SDL_Event &event, Direction &direction, SDL_S
     return direction;
 }
 
+/****************** Nom de la fonction **********************
+* NOM_FONCTION                                              *
+******************** Auteur , Dates *************************
+* Nom/Date : Éventuellement la version                      *
+********************* Description ***************************
+* Vous décrivez ici ce que fait cette fonction              *
+*********************** Entrées *****************************
+* Vous décrivez ici les données en entrée de la fonction    *
+*********************** Sorties *****************************
+* Vous détaillez ici ce que renvoie la fonction             *
+************************************************************/
 bool checkWin(TGrid grid) {
     bool win = true;
     int i = 0;
@@ -431,6 +550,17 @@ bool checkWin(TGrid grid) {
     return win;
 }
 
+/****************** Nom de la fonction **********************
+* NOM_FONCTION                                              *
+******************** Auteur , Dates *************************
+* Nom/Date : Éventuellement la version                      *
+********************* Description ***************************
+* Vous décrivez ici ce que fait cette fonction              *
+*********************** Entrées *****************************
+* Vous décrivez ici les données en entrée de la fonction    *
+*********************** Sorties *****************************
+* Vous détaillez ici ce que renvoie la fonction             *
+************************************************************/
 void levelWin(TGrid & grid, SDL_Surface *s, int &num, State &state, int levelMax) {
     if(checkWin(grid) == 1 && num < levelMax) {
         updateScreen(s);

@@ -1,9 +1,31 @@
 #include "sdl_funcs.h"
 
+/****************** Nom de la fonction **********************
+* NOM_FONCTION                                              *
+******************** Auteur , Dates *************************
+* Nom/Date : Éventuellement la version                      *
+********************* Description ***************************
+* Vous décrivez ici ce que fait cette fonction              *
+*********************** Entrées *****************************
+* Vous décrivez ici les données en entrée de la fonction    *
+*********************** Sorties *****************************
+* Vous détaillez ici ce que renvoie la fonction             *
+************************************************************/
 void initSDL() {
     SDL_Init(SDL_INIT_EVERYTHING);
 }
 
+/****************** Nom de la fonction **********************
+* NOM_FONCTION                                              *
+******************** Auteur , Dates *************************
+* Nom/Date : Éventuellement la version                      *
+********************* Description ***************************
+* Vous décrivez ici ce que fait cette fonction              *
+*********************** Entrées *****************************
+* Vous décrivez ici les données en entrée de la fonction    *
+*********************** Sorties *****************************
+* Vous détaillez ici ce que renvoie la fonction             *
+************************************************************/
 SDL_Surface* loadImage(std::string filename) {
 
     SDL_Surface* loadedImage = NULL;
@@ -19,6 +41,17 @@ SDL_Surface* loadImage(std::string filename) {
     return optimizedImage;
 }
 
+/****************** Nom de la fonction **********************
+* NOM_FONCTION                                              *
+******************** Auteur , Dates *************************
+* Nom/Date : Éventuellement la version                      *
+********************* Description ***************************
+* Vous décrivez ici ce que fait cette fonction              *
+*********************** Entrées *****************************
+* Vous décrivez ici les données en entrée de la fonction    *
+*********************** Sorties *****************************
+* Vous détaillez ici ce que renvoie la fonction             *
+************************************************************/
 SDL_Surface* loadImageWithColorKey(std::string filename, int r, int g, int b) {
 
     SDL_Surface* loadedImage = NULL;
@@ -40,6 +73,17 @@ SDL_Surface* loadImageWithColorKey(std::string filename, int r, int g, int b) {
     return optimizedImage;
 }
 
+/****************** Nom de la fonction **********************
+* NOM_FONCTION                                              *
+******************** Auteur , Dates *************************
+* Nom/Date : Éventuellement la version                      *
+********************* Description ***************************
+* Vous décrivez ici ce que fait cette fonction              *
+*********************** Entrées *****************************
+* Vous décrivez ici les données en entrée de la fonction    *
+*********************** Sorties *****************************
+* Vous détaillez ici ce que renvoie la fonction             *
+************************************************************/
 void applySurface(int x, int y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip) {
     SDL_Rect offset;
     offset.x = x;

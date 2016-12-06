@@ -20,14 +20,47 @@ struct ColorKey {
     int r, g, b;
 };
 
+/****************** Nom de la fonction **********************
+* NOM_FONCTION                                              *
+******************** Auteur , Dates *************************
+* Nom/Date : Éventuellement la version                      *
+********************* Description ***************************
+* Vous décrivez ici ce que fait cette fonction              *
+*********************** Entrées *****************************
+* Vous décrivez ici les données en entrée de la fonction    *
+*********************** Sorties *****************************
+* Vous détaillez ici ce que renvoie la fonction             *
+************************************************************/
 SDL_Surface* loadSurface(string name) {
     return loadImage("assets/" + name);
 }
 
+/****************** Nom de la fonction **********************
+* NOM_FONCTION                                              *
+******************** Auteur , Dates *************************
+* Nom/Date : Éventuellement la version                      *
+********************* Description ***************************
+* Vous décrivez ici ce que fait cette fonction              *
+*********************** Entrées *****************************
+* Vous décrivez ici les données en entrée de la fonction    *
+*********************** Sorties *****************************
+* Vous détaillez ici ce que renvoie la fonction             *
+************************************************************/
 SDL_Surface* loadSurface(string name, ColorKey ck) {
     return loadImageWithColorKey("assets/" + name, ck.r, ck.g, ck.b);
 }
 
+/****************** Nom de la fonction **********************
+* NOM_FONCTION                                              *
+******************** Auteur , Dates *************************
+* Nom/Date : Éventuellement la version                      *
+********************* Description ***************************
+* Vous décrivez ici ce que fait cette fonction              *
+*********************** Entrées *****************************
+* Vous décrivez ici les données en entrée de la fonction    *
+*********************** Sorties *****************************
+* Vous détaillez ici ce que renvoie la fonction             *
+************************************************************/
 void loadSurfaces() {
     surf_background = loadSurface("background.bmp");
     surf_editorLevelChoice = loadSurface("niveaux.png");
@@ -44,6 +77,17 @@ void loadSurfaces() {
     surf_winEnd = loadSurface("winEndSprite.bmp");
 }
 
+/****************** Nom de la fonction **********************
+* NOM_FONCTION                                              *
+******************** Auteur , Dates *************************
+* Nom/Date : Éventuellement la version                      *
+********************* Description ***************************
+* Vous décrivez ici ce que fait cette fonction              *
+*********************** Entrées *****************************
+* Vous décrivez ici les données en entrée de la fonction    *
+*********************** Sorties *****************************
+* Vous détaillez ici ce que renvoie la fonction             *
+************************************************************/
 void freeSurfaces() {
     SDL_FreeSurface(surf_background);
     SDL_FreeSurface(surf_editorLevelChoice);
