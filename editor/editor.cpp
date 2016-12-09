@@ -225,3 +225,20 @@ void saveLevel(TGrid grid, int level) {
         std::cout << "ERREUR: Impossible d'ouvrir le fichier en ecriture." << std::endl;
     }
 }
+
+bool isMouseOnEditorLevelButton(int mouseX, int mouseY) {
+// help button center : 242, 534, radius : 22
+    int dx = mouseX - 242;
+    int dy = mouseY - 534;
+
+    return dx * dx + dy * dy <= 22 * 22;
+}
+
+SDL_Surface* getEditorForeBackground(int mouseX, int mouseY) {
+
+    if (isMouseOnEditorLevelButton(mouseX, mouseY)) {
+        return surf_EditorHelp;
+    } else {
+        return 0;
+    }
+}

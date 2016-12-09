@@ -19,7 +19,7 @@ int main() {
 
     int levelEdit = 0;
 
-    int maxLevel = 10;
+    int maxLevel = 15;
 
     //  int choice = 1;
     CaseType choice = MONSTER;
@@ -50,77 +50,80 @@ int main() {
     while (!quit && SDL_WaitEvent(&event)) {
 
         // Event management
-//        while (SDL_PollEvent(&event)) {
+        //        while (SDL_PollEvent(&event)) {
 
-            switch (event.type) {
+        switch (event.type) {
 
-            case SDL_QUIT:
-                quit = true;
-                break;
+        case SDL_QUIT:
+            quit = true;
+            break;
 
-            case SDL_MOUSEMOTION:
-                mouseX = event.button.x;
-                mouseY = event.button.y;
-                pixelsToCoords(mouseX, mouseY, mouseXCoord, mouseYCoord);
-                break;
+        case SDL_MOUSEMOTION:
+            mouseX = event.button.x;
+            mouseY = event.button.y;
+            pixelsToCoords(mouseX, mouseY, mouseXCoord, mouseYCoord);
+            break;
 
-            case SDL_MOUSEBUTTONUP:
-                switch (event.button.button) {
-                case SDL_BUTTON_LEFT:
-                    if (state == MENU) {
+        case SDL_MOUSEBUTTONUP:
+            switch (event.button.button) {
+            case SDL_BUTTON_LEFT:
+                if (state == MENU) {
 
-                        if (isMouseOnPlayButton(mouseX, mouseY))
-                            state = GAME;
-                        else if (isMouseOnEditButton(mouseX, mouseY))
-                            state = EDITOR_MENU;
-                        else if (isMouseOnQuitButton(mouseX, mouseY))
-                            quit = true;
-
-                    } else if (state == EDITOR_MENU) {
-
-                        if(levelEdit != 0)
-                            state = EDITOR_GRID;
-
-                    } else if (state == GAME) {
-
-                        if(isMouseOnGameResetButton(mouseX, mouseY)) {
-                            initGrid(grid);
-                            loadLevel(grid, currentLevel);
-                        }
-
-                    }
-                    break;
-                default: break;
-                }
-                break;
-
-            case SDL_KEYDOWN:
-                switch(event.key.keysym.sym) {
-                case SDLK_ESCAPE:
-                    if(state == MENU) {
+                    if (isMouseOnPlayButton(mouseX, mouseY))
+                        state = GAME;
+                    else if (isMouseOnEditButton(mouseX, mouseY))
+                        state = EDITOR_MENU;
+                    else if (isMouseOnQuitButton(mouseX, mouseY))
                         quit = true;
-                    } else {
-                        if (state == EDITOR_GRID)
-                            saveLevel(grid, levelEdit);
+
+                } else if (state == EDITOR_MENU) {
+
+                    if(levelEdit != 0)
+                        state = EDITOR_GRID;
+
+                } else if (state == GAME) {
+
+                    if(isMouseOnGameResetButton(mouseX, mouseY)) {
+                        initGrid(grid);
+                        loadLevel(grid, currentLevel);
+                    }
+
+                } else if (state == EDITOR_GRID) {
+                    if(isMouseOnGameResetButton(mouseX, mouseY)) {
+                        saveLevel(grid, levelEdit);
                         state = MENU;
                     }
-                    break;
-                default: break;
                 }
                 break;
             default: break;
             }
+            break;
 
-//        }
+        case SDL_KEYDOWN:
+            switch(event.key.keysym.sym) {
+            case SDLK_ESCAPE:
+                if(state == MENU) {
+                    quit = true;
+                } else {
+                    if (state == EDITOR_GRID)
+                        saveLevel(grid, levelEdit);
+                        state = MENU;
+                }
+                break;
+            default: break;
+            }
+            break;
+        default: break;
+        }
+
+        //        }
 
         if (state == MENU) {
 
             setScreenBackground(screen, getMenuBackground(mouseX, mouseY));
-//            currentLevel = 1;
-//            levelEdit = 0;
-//            initGrid(grid);
-//            loadLevel(grid, 1);
-
+            currentLevel = 1;
+            levelEdit = 0;
+            loadLevel(grid, 1);
         } else if (state == GAME) {
 
             mouvement(grid, event, direction, screen, mouseXCoord, mouseYCoord, currentLevel);
@@ -130,9 +133,11 @@ int main() {
 
         } else if (state == EDITOR_GRID) {                //si on a choisi le niveau on lance l'éditeur
 
-            setScreenBackground(screen, surf_background);
-            draw(grid, screen);
-            drawCursor(screen, mouseX, mouseY, choice);
+            setScreenBackground(screen, surf_backgroundEditor);                    //on affiche le background de l editeur
+            draw(grid, screen);                                                    //on affiche les éléments de la grille
+            drawCursor(screen, mouseX, mouseY, choice);                            //on affiche la sélection à coté du curseur
+            setScreenBackground(screen, getEditorForeBackground(mouseX, mouseY)); //on superpose l'aide au background si on passe la souris sur le bouton help
+
             checkEditorKeyEvent(choice);
             checkEditorMouseClickEvent(grid, mouseXCoord, mouseYCoord, choice);
 

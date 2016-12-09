@@ -15,6 +15,8 @@ SDL_Surface *surf_livre;
 SDL_Surface *surf_menu;
 SDL_Surface *surf_win;
 SDL_Surface *surf_winEnd;
+SDL_Surface *surf_backgroundEditor;
+SDL_Surface *surf_EditorHelp;
 
 struct ColorKey {
     int r, g, b;
@@ -75,6 +77,9 @@ void loadSurfaces() {
     surf_menu = loadSurface("menuetedit.bmp");
     surf_win = loadSurface("winSprite.bmp");
     surf_winEnd = loadSurface("winEndSprite.bmp");
+    surf_backgroundEditor = loadSurface("background2.bmp");
+    surf_EditorHelp = loadSurface("EditorHelp.bmp", {0, 255, 255});
+
 }
 
 /****************** Nom de la fonction **********************
