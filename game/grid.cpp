@@ -221,16 +221,23 @@ bool sortie(int x, int y, Direction &direction){
 *********************** Sorties *****************************
 * Vous détaillez ici ce que renvoie la fonction             *
 ************************************************************/
-void collisionWith(TGrid & grid, int x, int y) {
+bool collisionWith(TGrid & grid, int x, int y) {
+
+    bool col = false;
+
     switch(grid[x][y].type) {
     case ICE:
         grid[x][y].type = EMPTY;
+        col = true;
         break;
     case SLEEPER:
         grid[x][y].type = MONSTER;
+        col = true;
         break;
     default: break;
     }
+    return col;
+
 }
 
 /****************** Nom de la fonction **********************
@@ -314,6 +321,10 @@ void moveP(TGrid & grid, int x, int y, Direction & direction, SDL_Surface *s, in
         }
         caseFinalx += dx;
 
+        if(dx == 0 && grid[x][y].direction != NONE) {
+            caseDir = NONE;    //si on est bloqué par un obstacle et que l'on reste sur place
+        }
+
         grid[x][y].type = EMPTY;
         coordsToPixels(caseFinalx, caseFinaly, coordCaseFinalx, coordCaseFinaly);
 
@@ -341,6 +352,10 @@ void moveP(TGrid & grid, int x, int y, Direction & direction, SDL_Surface *s, in
             else dy++;
         }
         caseFinaly += dy;
+
+        if(dy == 0 && grid[x][y].direction != NONE) {
+            caseDir = NONE;    //si on est bloqué par un obstacle et que l'on reste sur place
+        }
 
         grid[x][y].type = EMPTY;
         coordsToPixels(caseFinalx, caseFinaly, coordCaseFinalx, coordCaseFinaly);
@@ -370,6 +385,10 @@ void moveP(TGrid & grid, int x, int y, Direction & direction, SDL_Surface *s, in
             else dy++;
         }
         caseFinaly -= dy;
+
+        if(dy == 0 && grid[x][y].direction != NONE) {
+            caseDir = NONE;    //si on est bloqué par un obstacle et que l'on reste sur place
+        }
 
         grid[x][y].type = EMPTY;
         coordsToPixels(caseFinalx, caseFinaly, coordCaseFinalx, coordCaseFinaly);
@@ -403,6 +422,10 @@ void moveP(TGrid & grid, int x, int y, Direction & direction, SDL_Surface *s, in
         }
         caseFinalx -= dx;
 
+        if(dx == 0 && grid[x][y].direction != NONE) {
+            caseDir = NONE;    //si on est bloqué par un obstacle et que l'on reste sur place
+        }
+
         grid[x][y].type = EMPTY;
         coordsToPixels(caseFinalx, caseFinaly, coordCaseFinalx, coordCaseFinaly);
 
@@ -421,9 +444,13 @@ void moveP(TGrid & grid, int x, int y, Direction & direction, SDL_Surface *s, in
  ******** evenement après deplacement du monstre
  ********************************************************************************/
     Direction dir = caseDir;
-    if (dir != NONE) {
-        moveP(grid, caseFinalx, caseFinaly, dir, s, num);
-    } else if(sortie(caseFinalx,caseFinaly,direction)==true) {
+    bool collision = false;
+
+    if (dir != NONE) {      // si la case sur laquelle on est une direction on la modifie
+        direction = dir;
+    }
+
+    if(sortie(caseFinalx,caseFinaly,direction) == true) {
         initGrid(grid);
         loadLevel(grid, num);
     } else {
@@ -434,7 +461,7 @@ void moveP(TGrid & grid, int x, int y, Direction & direction, SDL_Surface *s, in
         case RIGHT :
             colWithX = caseFinalx+1;
             colWithY = caseFinaly;
-            collisionWith(grid, colWithX,colWithY);
+            collision = collisionWith(grid, colWithX,colWithY);
             setScreenBackground(s,surf_background);
             draw(grid, s);
             SDL_Flip(s);
@@ -442,7 +469,7 @@ void moveP(TGrid & grid, int x, int y, Direction & direction, SDL_Surface *s, in
         case LEFT :
             colWithX = caseFinalx-1;
             colWithY = caseFinaly;
-            collisionWith(grid, colWithX,colWithY);
+            collision = collisionWith(grid, colWithX,colWithY);
             setScreenBackground(s,surf_background);
             draw(grid, s);
             SDL_Flip(s);
@@ -450,7 +477,7 @@ void moveP(TGrid & grid, int x, int y, Direction & direction, SDL_Surface *s, in
         case UP :
             colWithX = caseFinalx;
             colWithY = caseFinaly-1;
-            collisionWith(grid, colWithX,colWithY);
+            collision = collisionWith(grid, colWithX,colWithY);
             setScreenBackground(s,surf_background);
             draw(grid, s);
             SDL_Flip(s);
@@ -458,17 +485,23 @@ void moveP(TGrid & grid, int x, int y, Direction & direction, SDL_Surface *s, in
         case DOWN :
             colWithX = caseFinalx;
             colWithY = caseFinaly+1;
-            collisionWith(grid, colWithX,colWithY);
+            collision = collisionWith(grid, colWithX,colWithY);
             setScreenBackground(s,surf_background);
             draw(grid, s);
             SDL_Flip(s);
             break;
         default:
             break;
-
         }
-        checkColAroundMonster(grid, caseFinalx, caseFinaly);
+        if(collision) SDL_Delay(200);
     }
+
+    if (dir != NONE){
+        moveP(grid, caseFinalx, caseFinaly, direction, s, num);
+    }
+
+    checkColAroundMonster(grid, caseFinalx, caseFinaly);
+
     direction = NONE;
 }
 
