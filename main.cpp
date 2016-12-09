@@ -43,17 +43,14 @@ int main() {
     TGrid grid;
     initGrid(grid);
 
-    //Surfaces game Initialization
-    loadSurfaces();
-
     SDL_Event event;
     int mouseX, mouseY; // Cursor coordinates in pixels
     int mouseXCoord, mouseYCoord; // Coordinates of the case pointed by the cursor
 
-    while (!quit) {
+    while (!quit && SDL_WaitEvent(&event)) {
 
         // Event management
-        while (SDL_PollEvent(&event)) {
+//        while (SDL_PollEvent(&event)) {
 
             switch (event.type) {
 
@@ -114,15 +111,15 @@ int main() {
             default: break;
             }
 
-        }
+//        }
 
         if (state == MENU) {
 
             setScreenBackground(screen, getMenuBackground(mouseX, mouseY));
-            currentLevel = 1;
-            levelEdit = 0;
-            initGrid(grid);
-            loadLevel(grid, 1);
+//            currentLevel = 1;
+//            levelEdit = 0;
+//            initGrid(grid);
+//            loadLevel(grid, 1);
 
         } else if (state == GAME) {
 
