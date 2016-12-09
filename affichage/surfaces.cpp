@@ -23,11 +23,12 @@ struct ColorKey {
 };
 
 /****************** Nom de la fonction **********************
-* NOM_FONCTION                                              *
+* loadSurface                                               *
 ******************** Auteur , Dates *************************
 * Nom/Date : Éventuellement la version                      *
 ********************* Description ***************************
-* Vous décrivez ici ce que fait cette fonction              *
+* Permet de ne pas se préocuper du dossier contenant l'image*
+* lorsque l'on utilise la fonction loadImage                *
 *********************** Entrées *****************************
 * Vous décrivez ici les données en entrée de la fonction    *
 *********************** Sorties *****************************

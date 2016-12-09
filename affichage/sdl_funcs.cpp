@@ -1,30 +1,33 @@
 #include "sdl_funcs.h"
 
 /****************** Nom de la fonction **********************
-* NOM_FONCTION                                              *
+* initSDL()                                                 *
 ******************** Auteur , Dates *************************
 * Nom/Date : Éventuellement la version                      *
 ********************* Description ***************************
-* Vous décrivez ici ce que fait cette fonction              *
+* Permet d'initialiser tous les éléments la librairie SDL   *
 *********************** Entrées *****************************
-* Vous décrivez ici les données en entrée de la fonction    *
+*                                                           *
 *********************** Sorties *****************************
-* Vous détaillez ici ce que renvoie la fonction             *
+*                                                           *
 ************************************************************/
 void initSDL() {
     SDL_Init(SDL_INIT_EVERYTHING);
 }
 
 /****************** Nom de la fonction **********************
-* NOM_FONCTION                                              *
+* loadImage                                                 *
 ******************** Auteur , Dates *************************
 * Nom/Date : Éventuellement la version                      *
 ********************* Description ***************************
-* Vous décrivez ici ce que fait cette fonction              *
+* Permet de retourner l'adresse d'une image chargée         *
+* à partir d'un string passé en paramètre                   *
 *********************** Entrées *****************************
-* Vous décrivez ici les données en entrée de la fonction    *
+* std::string filename: correspond au chemin d'accès de     *
+* l'image que l'on veut charger                             *
 *********************** Sorties *****************************
-* Vous détaillez ici ce que renvoie la fonction             *
+* SDL_Surface* optimizedImage: corespond à l'adresse de     *
+* de l'image que l'on a chargé                              *
 ************************************************************/
 SDL_Surface* loadImage(std::string filename) {
 
@@ -42,15 +45,20 @@ SDL_Surface* loadImage(std::string filename) {
 }
 
 /****************** Nom de la fonction **********************
-* NOM_FONCTION                                              *
+* loadImageWithColorKey                                     *
 ******************** Auteur , Dates *************************
 * Nom/Date : Éventuellement la version                      *
 ********************* Description ***************************
-* Vous décrivez ici ce que fait cette fonction              *
+* Meme fonction que loadImage mais permet en plus de charger*
+* une image en ignorant une couleur
 *********************** Entrées *****************************
-* Vous décrivez ici les données en entrée de la fonction    *
+* std::string filename: correspond au chemin d'accès de     *
+*                       l'image que l'on veut charger       *
+* int r, int g, int b: correspond au codage rgb pour enlever*
+*                      la couleur correspondante            *
 *********************** Sorties *****************************
-* Vous détaillez ici ce que renvoie la fonction             *
+*  SDL_Surface* optimizedImage: corespond à l'adresse de    *
+* de l'image que l'on a chargé                              *
 ************************************************************/
 SDL_Surface* loadImageWithColorKey(std::string filename, int r, int g, int b) {
 
@@ -74,15 +82,22 @@ SDL_Surface* loadImageWithColorKey(std::string filename, int r, int g, int b) {
 }
 
 /****************** Nom de la fonction **********************
-* NOM_FONCTION                                              *
+* applySurface                                              *
 ******************** Auteur , Dates *************************
 * Nom/Date : Éventuellement la version                      *
 ********************* Description ***************************
-* Vous décrivez ici ce que fait cette fonction              *
+* Permet d'appliquer une surface source à une surface de    *
+* destination en la modifiant à partir de coordonnées x et y.
+* Il y a la possibilité d'appliquer uniquement une partie   *
+* de la surface source grace au paramètre SDL_Rect* clip    *
 *********************** Entrées *****************************
-* Vous décrivez ici les données en entrée de la fonction    *
+* SDL_Surface* source: pointeur vers l'image source         *
+* SDL_Surface* destination: pointeur vers l'image de        *
+*                           destination (ecran)             *
+* int x, int y: coordonnée de l'image chargée vers la       *
+*               surface de destination                      *
 *********************** Sorties *****************************
-* Vous détaillez ici ce que renvoie la fonction             *
+*                                                           *
 ************************************************************/
 void applySurface(int x, int y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip) {
     SDL_Rect offset;

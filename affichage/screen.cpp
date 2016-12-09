@@ -2,45 +2,52 @@
 #include <iostream>
 
 /****************** Nom de la fonction **********************
-* NOM_FONCTION                                              *
+* initScreen                                                *
 ******************** Auteur , Dates *************************
 * Nom/Date : Éventuellement la version                      *
 ********************* Description ***************************
-* Vous décrivez ici ce que fait cette fonction              *
+* Permet d'initialiser la fenetre à partir de constantes    *
+* définies dans le .h en modifiant SDL_Surface* & screen    *
+* passé en paramètre                                        *
 *********************** Entrées *****************************
-* Vous décrivez ici les données en entrée de la fonction    *
+* SDL_Surface* & screen : correspont au fond de la fenêtre  *
 *********************** Sorties *****************************
-* Vous détaillez ici ce que renvoie la fonction             *
+*                                                           *
 ************************************************************/
 void initScreen(SDL_Surface* & screen) {
     screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE);
 }
 
 /****************** Nom de la fonction **********************
-* NOM_FONCTION                                              *
+* setScreenBackground                                       *
 ******************** Auteur , Dates *************************
 * Nom/Date : Éventuellement la version                      *
 ********************* Description ***************************
-* Vous décrivez ici ce que fait cette fonction              *
+* Permet d'appliquer un fond d'écran en modifiant           *
+* SDL_Surface* & screen à partir d'un SDL_Surface* passés   *
+* en paramètre                                              *
 *********************** Entrées *****************************
-* Vous décrivez ici les données en entrée de la fonction    *
+* SDL_Surface* & screen : correspont au fond de la fenêtre  *
+*SDL_Surface* background: correspond à une image précedement*
+* chargée                                                   *
 *********************** Sorties *****************************
-* Vous détaillez ici ce que renvoie la fonction             *
+*                                                           *
 ************************************************************/
 void setScreenBackground(SDL_Surface* screen, SDL_Surface* background) {
     applySurface(0, 0, background, screen, NULL);
 }
 
 /****************** Nom de la fonction **********************
-* NOM_FONCTION                                              *
+* updateScreen                                              *
 ******************** Auteur , Dates *************************
 * Nom/Date : Éventuellement la version                      *
 ********************* Description ***************************
-* Vous décrivez ici ce que fait cette fonction              *
+* Permet d'afficher SDL_Surface* & screen passée en         *
+* en paramètre                                              *
 *********************** Entrées *****************************
-* Vous décrivez ici les données en entrée de la fonction    *
+* SDL_Surface* & screen : correspont au fond de la fenêtre  *
 *********************** Sorties *****************************
-* Vous détaillez ici ce que renvoie la fonction             *
+*                                                           *
 ************************************************************/
 void updateScreen(SDL_Surface* screen) {
     SDL_Flip(screen);
