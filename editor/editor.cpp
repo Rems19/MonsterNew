@@ -234,7 +234,7 @@ bool isMouseOnEditorLevelButton(int mouseX, int mouseY) {
     return dx * dx + dy * dy <= 22 * 22;
 }
 
-SDL_Surface* getEditorForeBackground(int mouseX, int mouseY) {
+SDL_Surface* getEditorForeground(int mouseX, int mouseY) {
 
     if (isMouseOnEditorLevelButton(mouseX, mouseY)) {
         return surf_EditorHelp;

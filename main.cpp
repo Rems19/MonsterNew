@@ -47,10 +47,11 @@ int main() {
     int mouseX, mouseY; // Cursor coordinates in pixels
     int mouseXCoord, mouseYCoord; // Coordinates of the case pointed by the cursor
 
-    while (!quit && SDL_WaitEvent(&event)) {
+    SDL_Rect editor_help_background = {
+        0, 0, 320, 568
+    };
 
-        // Event management
-        //        while (SDL_PollEvent(&event)) {
+    while (!quit && SDL_WaitEvent(&event)) {
 
         switch (event.type) {
 
@@ -116,8 +117,6 @@ int main() {
         default: break;
         }
 
-        //        }
-
         if (state == MENU) {
 
             setScreenBackground(screen, getMenuBackground(mouseX, mouseY));
@@ -131,12 +130,12 @@ int main() {
             draw(grid, screen);
             levelWin(grid, screen, currentLevel, state, maxLevel);
 
-        } else if (state == EDITOR_GRID) {                //si on a choisi le niveau on lance l'éditeur
+        } else if (state == EDITOR_GRID) {                                          //si on a choisi le niveau on lance l'éditeur
 
-            setScreenBackground(screen, surf_backgroundEditor);                    //on affiche le background de l editeur
-            draw(grid, screen);                                                    //on affiche les éléments de la grille
-            drawCursor(screen, mouseX, mouseY, choice);                            //on affiche la sélection à coté du curseur
-            setScreenBackground(screen, getEditorForeBackground(mouseX, mouseY)); //on superpose l'aide au background si on passe la souris sur le bouton help
+            setScreenBackground(screen, surf_backgroundEditor);                     //on affiche le background de l editeur
+            draw(grid, screen);                                                     //on affiche les éléments de la grille
+            drawCursor(screen, mouseX, mouseY, choice);                             //on affiche la sélection à coté du curseur
+            setScreenBackground(screen, getEditorForeground(mouseX, mouseY));   //on superpose l'aide au background si on passe la souris sur le bouton help
 
             checkEditorKeyEvent(choice);
             checkEditorMouseClickEvent(grid, mouseXCoord, mouseYCoord, choice);
