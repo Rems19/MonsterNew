@@ -101,7 +101,7 @@ void draw(TGrid grid, SDL_Surface *s) {
                 applySurface(x, y, surf_monstre, s, NULL);
                 break;
             case ICE:
-                applySurface(x, y - 14, surf_glacon, s, NULL);
+                applySurface(x-2 , y - 8, surf_glacon, s, NULL);
                 break;
             case BOOK:
                 applySurface(x, y - 14, surf_livre, s, NULL);
@@ -129,8 +129,10 @@ void draw(TGrid grid, SDL_Surface *s) {
 void loadLevel(TGrid & grid, int currentLevel) {
 
     std::string lvl;
-    int n;
     CaseType caseType;
+    Direction direction;
+    int type;
+    int dir;
     int x = 0;
     int y = 0;
 
@@ -140,28 +142,15 @@ void loadLevel(TGrid & grid, int currentLevel) {
 
     if(monFlux) {
         while(!monFlux.eof()) {
-            monFlux >> n;
-            caseType = (CaseType) n;
+            monFlux >> type;
+            monFlux >> dir;
 
-            grid[x][y].type = EMPTY;
-            switch(caseType) {
-            case UP_E:
-                grid[x][y].direction = UP;
-                break;
-            case DOWN_E:
-                grid[x][y].direction = DOWN;
-                break;
-            case RIGHT_E:
-                grid[x][y].direction = RIGHT;
-                break;
-            case LEFT_E:
-                grid[x][y].direction = LEFT;
-                break;
-            default:
-                grid[x][y].type = caseType;
-                grid[x][y].direction = NONE;
-                break;
-            }
+            caseType = (CaseType) type;
+            direction = (Direction) dir;
+
+            grid[x][y].type = caseType;
+            grid[x][y].direction = direction;
+
 
             if(y + 1  < HEIGHT) {
                 y++;
@@ -494,13 +483,13 @@ void moveP(TGrid & grid, int x, int y, Direction & direction, SDL_Surface *s, in
             break;
         }
         if(collision) SDL_Delay(200);
-    }
 
-    if (dir != NONE){
-        moveP(grid, caseFinalx, caseFinaly, direction, s, num);
-    }
-
-    checkColAroundMonster(grid, caseFinalx, caseFinaly);
+        if (dir != NONE){
+            moveP(grid, caseFinalx, caseFinaly, direction, s, num);
+        } else {
+            checkColAroundMonster(grid, caseFinalx, caseFinaly);
+        }
+    }     
 
     direction = NONE;
 }

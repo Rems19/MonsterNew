@@ -17,7 +17,7 @@
 void checkEditorKeyEvent(CaseType & choice) {
 
     Uint8 *keystates = SDL_GetKeyState( NULL ); //on récupère le status des touches (on considère que le programme
-                                                //tourne suffisament vite pour ne jamais manquer des touches)
+    //tourne suffisament vite pour ne jamais manquer des touches)
 
     if(keystates[SDLK_a]){
         choice = MONSTER;       //si on presse "a" , on sélectionne un monstre
@@ -64,32 +64,33 @@ void checkEditorMouseClickEvent(TGrid & grid, int coordX, int coordY, CaseType c
 
     Uint8 mousestates = SDL_GetMouseState(NULL,NULL);
 
-    if (mousestates &SDL_BUTTON_LEFT) {
+    if ( coordX != -1 && coordY != -1) {
+        if (mousestates &SDL_BUTTON_LEFT ) {
 
-        grid[coordX][coordY].type = EMPTY;
-        switch(choice) {
-        case UP_E:
-            grid[coordX][coordY].direction = UP;
-            break;
-        case DOWN_E:
-            grid[coordX][coordY].direction = DOWN;
-            break;
-        case RIGHT_E:
-            grid[coordX][coordY].direction = RIGHT;
-            break;
-        case LEFT_E:
-            grid[coordX][coordY].direction = LEFT;
-            break;
-        default:
-            grid[coordX][coordY].type = choice;
+            switch(choice) {
+            case UP_E:
+                grid[coordX][coordY].direction = UP;
+                break;
+            case DOWN_E:
+                grid[coordX][coordY].direction = DOWN;
+                break;
+            case RIGHT_E:
+                grid[coordX][coordY].direction = RIGHT;
+                break;
+            case LEFT_E:
+                grid[coordX][coordY].direction = LEFT;
+                break;
+            default:
+                grid[coordX][coordY].type = choice;
+                grid[coordX][coordY].direction = NONE;
+                break;
+            }
+
+        } else if(mousestates & SDL_BUTTON_RMASK) {
+            grid[coordX][coordY].type = EMPTY;
             grid[coordX][coordY].direction = NONE;
-            break;
+
         }
-
-    } else if(mousestates & SDL_BUTTON_RMASK) {
-        grid[coordX][coordY].type = EMPTY;
-        grid[coordX][coordY].direction = NONE;
-
     }
 }
 
@@ -181,14 +182,16 @@ int levelSelect(int mouseX, int mouseY) {
 * rempli d'entier correspondant au type de chaque           *
 * case de la grille de notre niveau                         *
 *********************** Entrées *****************************
-* La grille                                                 *
-* Le niveau selectionné                                     *
+* TGrid grid : tableau  de deux dimensions contenant une    *
+*              direction et un type                         *
+* int level : entier contenant le niveau à sauvegarder      *
 *********************** Sorties *****************************
 * Ne retourne rien                                          *
 ************************************************************/
 void saveLevel(TGrid grid, int level) {
 
     int type;
+    int direction;
 
     std::string lvl;
     lvl = "levels/niveaux" + std::to_string(level) + ".txt";
@@ -199,25 +202,9 @@ void saveLevel(TGrid grid, int level) {
         for(int i = 0; i < WIDTH; i++) {
             for(int j = 0; j < HEIGHT; j++) {
 
-                type = grid[i][j].type;             //on récupére le type de la case
-
-                if(type == EMPTY)                   // si le type est EMPTY (0) alors on regarde si la case et une flèche ou non
-                     switch(grid[i][j].direction) { // on regarde si une direction est assigné à la case
-                     case UP:
-                         type = UP_E;               //c'est une flèche vers le haut, type = 5
-                         break;
-                     case DOWN:
-                         type = DOWN_E;             //c'est une flèche vers le bas, type = 6
-                         break;
-                     case RIGHT:
-                         type = RIGHT_E;            //c'est une flèche vers la droite, type = 7
-                         break;
-                     case LEFT:
-                         type = LEFT_E;             //c'est une flèche vers la gauche, type = 8
-                         break;
-                     default: break;                //si pas de direction on reste à zéro
-                     }
-                fichier << type << std::endl;
+                type = grid[i][j].type;                             //on récupère le type de la case
+                direction = grid[i][j].direction;                   //on recupère la direction de la case
+                fichier << type << " " << direction << std::endl;   //on écrit les valeurs dans le fichier texte
             }
         }
         fichier.close();
@@ -227,7 +214,7 @@ void saveLevel(TGrid grid, int level) {
 }
 
 bool isMouseOnEditorLevelButton(int mouseX, int mouseY) {
-// help button center : 242, 534, radius : 22
+    // help button center : 242, 534, radius : 22
     int dx = mouseX - 242;
     int dy = mouseY - 534;
 
