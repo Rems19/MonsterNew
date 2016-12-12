@@ -50,7 +50,8 @@ SDL_Surface* loadImage(std::string filename) {
 * Nom/Date : Éventuellement la version                      *
 ********************* Description ***************************
 * Meme fonction que loadImage mais permet en plus de charger*
-* une image en ignorant une couleur
+* une image en ignorant une couleur et d'ajouter un         *
+* transparent                                               *
 *********************** Entrées *****************************
 * std::string filename: correspond au chemin d'accès de     *
 *                       l'image que l'on veut charger       *
@@ -60,7 +61,7 @@ SDL_Surface* loadImage(std::string filename) {
 *  SDL_Surface* optimizedImage: corespond à l'adresse de    *
 * de l'image que l'on a chargé                              *
 ************************************************************/
-SDL_Surface* loadImageWithColorKey(std::string filename, int r, int g, int b) {
+SDL_Surface* loadImageWithColorKey(std::string filename, int r, int g, int b, int alpha) {
 
     SDL_Surface* loadedImage = NULL;
     SDL_Surface* optimizedImage = NULL;
@@ -75,6 +76,7 @@ SDL_Surface* loadImageWithColorKey(std::string filename, int r, int g, int b) {
         if(optimizedImage != NULL) {
             Uint32 colorkey = SDL_MapRGB(optimizedImage -> format, r, g, b);
             SDL_SetColorKey(optimizedImage, SDL_SRCCOLORKEY, colorkey);
+            SDL_SetAlpha(optimizedImage, SDL_SRCALPHA, alpha);
         }
     }
 

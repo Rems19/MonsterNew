@@ -1,15 +1,18 @@
 #include "grid.h"
 
 /****************** Nom de la fonction **********************
-* NOM_FONCTION                                              *
+* coordsToPixels                                            *
 ******************** Auteur , Dates *************************
 * Nom/Date : Éventuellement la version                      *
 ********************* Description ***************************
-* Vous décrivez ici ce que fait cette fonction              *
+* Permet de convertir les coordonnées par rapport à la      *
+* grille en coordonnées par rapport à la fenêtre en faisant *
+* un passage par référence                                  *
 *********************** Entrées *****************************
-* Vous décrivez ici les données en entrée de la fonction    *
+* int coordX int coordY: coordonnées par rapport à la grille*
+* int & x, int & y: coordonnées par rapport à la fenêtre    *
 *********************** Sorties *****************************
-* Vous détaillez ici ce que renvoie la fonction             *
+* ne retourne rien (référence)                              *
 ************************************************************/
 void coordsToPixels(int coordX, int coordY, int & x, int & y) {
     x = MARGIN_LEFT + coordX * CASE_WIDTH;
@@ -17,15 +20,19 @@ void coordsToPixels(int coordX, int coordY, int & x, int & y) {
 }
 
 /****************** Nom de la fonction **********************
-* NOM_FONCTION                                              *
+*  pixelsToCoords                                           *
 ******************** Auteur , Dates *************************
 * Nom/Date : Éventuellement la version                      *
 ********************* Description ***************************
-* Vous décrivez ici ce que fait cette fonction              *
+* Permet de convertir les coordonnées par rapport à la      *
+* fenêtre en coordonnées par rapport à la grille en faisant *
+* un passage par référence                                  *
+* -1 est affecté si le curseur n'est pas sur la grille      *
 *********************** Entrées *****************************
-* Vous décrivez ici les données en entrée de la fonction    *
+* int x, int y: coordonnées par rapport à la fenêtre        *
+* int &coordX int &coordY: coordonnées par rapport à la grille
 *********************** Sorties *****************************
-* Vous détaillez ici ce que renvoie la fonction             *
+* ne retourne rien (référence)                              *
 ************************************************************/
 void pixelsToCoords(int x, int y, int & coordX, int & coordY) {
     if (x - MARGIN_LEFT < 0 || x > MARGIN_LEFT + WIDTH * CASE_WIDTH || y - MARGIN_TOP < 0 || y > MARGIN_TOP + HEIGHT * CASE_HEIGHT) {
@@ -38,15 +45,16 @@ void pixelsToCoords(int x, int y, int & coordX, int & coordY) {
 }
 
 /****************** Nom de la fonction **********************
-* NOM_FONCTION                                              *
+* initGrid                                                  *
 ******************** Auteur , Dates *************************
 * Nom/Date : Éventuellement la version                      *
 ********************* Description ***************************
-* Vous décrivez ici ce que fait cette fonction              *
+* Permet d'initialiser les valeurs d'une grille passée en   *
+* référence en la remplissant de case vide                  *
 *********************** Entrées *****************************
-* Vous décrivez ici les données en entrée de la fonction    *
+* TGrid & grid: tableau de type Tgrid par référence         *
 *********************** Sorties *****************************
-* Vous détaillez ici ce que renvoie la fonction             *
+* ne retourne rien (référence)                              *
 ************************************************************/
 void initGrid(TGrid & grid) {
     for (int xCoord = 0; xCoord < WIDTH; xCoord++) {
@@ -58,15 +66,17 @@ void initGrid(TGrid & grid) {
 }
 
 /****************** Nom de la fonction **********************
-* NOM_FONCTION                                              *
+* draw                                                      *
 ******************** Auteur , Dates *************************
 * Nom/Date : Éventuellement la version                      *
 ********************* Description ***************************
-* Vous décrivez ici ce que fait cette fonction              *
+* Permet de charger l'affichage des éléments de la grille   *
+* dans la mémoire tampon en passant une surface par référence
 *********************** Entrées *****************************
-* Vous décrivez ici les données en entrée de la fonction    *
+* TGrid & grid: tableau de type Tgrid(grille)               *
+* SDL_Surface *s: pointeur vers surface de notre fenêtre    *
 *********************** Sorties *****************************
-* Vous détaillez ici ce que renvoie la fonction             *
+*   ne retourne rien (référence)                            *
 ************************************************************/
 void draw(TGrid grid, SDL_Surface *s) {
     int x = -1;
@@ -109,22 +119,25 @@ void draw(TGrid grid, SDL_Surface *s) {
             case SLEEPER:
                 applySurface(x, y - 10, surf_dormeur, s, NULL);
                 break;
-            default: break;
+            default:
+                break;
             }
         }
     }
 }
 
 /****************** Nom de la fonction **********************
-* NOM_FONCTION                                              *
+* loadLevel                                                 *
 ******************** Auteur , Dates *************************
 * Nom/Date : Éventuellement la version                      *
 ********************* Description ***************************
-* Vous décrivez ici ce que fait cette fonction              *
+* Permet de charger un niveau à partir d'un fichier texte   *
+* correspondant à un entier passé en paramètre              *
 *********************** Entrées *****************************
-* Vous décrivez ici les données en entrée de la fonction    *
+*  TGrid & grid: tableau de type Tgrid par référence        *
+* currentLevel: entier correspondant au niveau à charger    *
 *********************** Sorties *****************************
-* Vous détaillez ici ce que renvoie la fonction             *
+* ne retourne rien (référence)              *
 ************************************************************/
 void loadLevel(TGrid & grid, int currentLevel) {
 
@@ -166,17 +179,20 @@ void loadLevel(TGrid & grid, int currentLevel) {
 }
 
 /****************** Nom de la fonction **********************
-* NOM_FONCTION                                              *
+* sortie                                                    *
 ******************** Auteur , Dates *************************
 * Nom/Date : Éventuellement la version                      *
 ********************* Description ***************************
-* Vous décrivez ici ce que fait cette fonction              *
+* Retourne un booléen pour savoir si un monstre sort de la  *
+* grille                                                    *
 *********************** Entrées *****************************
-* Vous décrivez ici les données en entrée de la fonction    *
+* int x, y: correspond aux coordonnées du monstre (grille)  *
+* Direction direction: correspond à la direction du         *
+* déplacement du monstre                                    *
 *********************** Sorties *****************************
-* Vous détaillez ici ce que renvoie la fonction             *
+* revoie true ou false si le monstre sort ou non            *
 ************************************************************/
-bool sortie(int x, int y, Direction &direction){
+bool sortie(int x, int y, Direction direction){
 
     bool sortie = false;
 
@@ -200,86 +216,102 @@ bool sortie(int x, int y, Direction &direction){
 }
 
 /****************** Nom de la fonction **********************
-* NOM_FONCTION                                              *
+* collisionWith                                             *
 ******************** Auteur , Dates *************************
 * Nom/Date : Éventuellement la version                      *
 ********************* Description ***************************
-* Vous décrivez ici ce que fait cette fonction              *
+* Permet de supprimer un glaçon ou de réveiller un dormeur  *
+* présent dans une case donnée en paramètre                 *
 *********************** Entrées *****************************
-* Vous décrivez ici les données en entrée de la fonction    *
+* TGrid & grid: tableau correspondant à la grille           *
+* int x, int y: coordonnées de la case en collsion          *
 *********************** Sorties *****************************
-* Vous détaillez ici ce que renvoie la fonction             *
+* retourne vrai s'il y a eu collision false sinon           *
 ************************************************************/
-bool collisionWith(TGrid & grid, int x, int y) {
+int collisionWith(TGrid & grid, int x, int y) {
 
-    bool col = false;
+    int col = 0;
 
     switch(grid[x][y].type) {
     case ICE:
+
         grid[x][y].type = EMPTY;
-        col = true;
+        col = 1;
         break;
+
     case SLEEPER:
         grid[x][y].type = MONSTER;
-        col = true;
+        col = 2;
         break;
+
     default: break;
     }
+
     return col;
 
 }
 
 /****************** Nom de la fonction **********************
-* NOM_FONCTION                                              *
+* checkColAroundMonster                                     *
 ******************** Auteur , Dates *************************
 * Nom/Date : Éventuellement la version                      *
 ********************* Description ***************************
-* Vous décrivez ici ce que fait cette fonction              *
+* Permet à partir des coordonnées d'un monstre de réveiller *
+* tous les monstres autour                                  *
 *********************** Entrées *****************************
-* Vous décrivez ici les données en entrée de la fonction    *
+* TGrid & grid: tableau correspondant à la grille           *
+* int x, int y: coordonnées de la case du monstre           *
 *********************** Sorties *****************************
-* Vous détaillez ici ce que renvoie la fonction             *
+* ne retourne rien (référence)                              *
 ************************************************************/
-void checkColAroundMonster(TGrid & grid, int xCoord, int yCoord) {
+void checkColAroundMonster(TGrid & grid, int x, int y) {
 
-
-    if(xCoord + 1 < WIDTH ) {
-        if(grid[xCoord + 1][yCoord].type == SLEEPER) {
-            grid[xCoord + 1][yCoord].type = MONSTER;
+    if(x + 1 < WIDTH ) {
+        if(grid[x + 1][y].type == SLEEPER) {
+            grid[x + 1][y].type = MONSTER;
         }
     }
 
-    if(xCoord - 1 > -1 ) {
-        if(grid[xCoord - 1][yCoord].type == SLEEPER) {
-            grid[xCoord - 1][yCoord].type = MONSTER;
+    if(x - 1 > -1 ) {
+        if(grid[x - 1][y].type == SLEEPER) {
+            grid[x - 1][y].type = MONSTER;
         }
     }
 
-    if(yCoord - 1 > -1 ) {
-        if(grid[xCoord][yCoord - 1].type == SLEEPER) {
-            grid[xCoord][yCoord - 1].type = MONSTER;
+    if(y - 1 > -1 ) {
+        if(grid[x][y - 1].type == SLEEPER) {
+            grid[x][y - 1].type = MONSTER;
         }
     }
 
-    if(yCoord + 1 < HEIGHT ) {
-        if(grid[xCoord][yCoord + 1].type == SLEEPER) {
-            grid[xCoord][yCoord + 1].type = MONSTER;
+    if(y + 1 < HEIGHT ) {
+        if(grid[x][y + 1].type == SLEEPER) {
+            grid[x][y + 1].type = MONSTER;
         }
     }
 }
 
+
 /****************** Nom de la fonction **********************
-* NOM_FONCTION                                              *
+* moveMonster                                               *
 ******************** Auteur , Dates *************************
 * Nom/Date : Éventuellement la version                      *
 ********************* Description ***************************
-* Vous décrivez ici ce que fait cette fonction              *
+* Permet de déplacer le monstre à partir d'un direction     *
+* et d'agir en fonction de ce déplacement (collisions,      *
+*sortie, changement de direction, modification de la grille,*
+* affichage)                                                *
 *********************** Entrées *****************************
-* Vous décrivez ici les données en entrée de la fonction    *
+* TGrid & grid: tableau correspondant à la grille           *
+* int x, int y: coordonnées de la case du monstre           *
+* Direction & direction: direction donnée pour le déplacer  *
+*                        le monstre                         *
+* SDL_Surface *s: surface de la fenêtre                     *
+* int num: correspond au numéro du niveau en cour           *
 *********************** Sorties *****************************
-* Vous détaillez ici ce que renvoie la fonction             *
+* ne retourne rien (référence)                              *
 ************************************************************/
-void moveP(TGrid & grid, int x, int y, Direction & direction, SDL_Surface *s, int num){
+void moveMonster(TGrid & grid, int x, int y, Direction & direction, SDL_Surface *s, int num){
 
     int i;
     int j;
@@ -292,7 +324,7 @@ void moveP(TGrid & grid, int x, int y, Direction & direction, SDL_Surface *s, in
     int coordCaseFinalx = 0;
     int coordCaseFinaly = 0;
 
-    int delay = 1; // Changer la vitesse de l'animation ici
+    int delay = 2; // Changer la vitesse de l'animation ici
 
     CaseType nextCaseType;
     Direction caseDir;
@@ -485,30 +517,39 @@ void moveP(TGrid & grid, int x, int y, Direction & direction, SDL_Surface *s, in
         if(collision) SDL_Delay(200);
 
         if (dir != NONE){
-            moveP(grid, caseFinalx, caseFinaly, direction, s, num);
+            moveMonster(grid, caseFinalx, caseFinaly, direction, s, num);
         } else {
             checkColAroundMonster(grid, caseFinalx, caseFinaly);
         }
-    }     
+    }
 
     direction = NONE;
 }
 
 /****************** Nom de la fonction **********************
-* NOM_FONCTION                                              *
+* mouvement                                                 *
 ******************** Auteur , Dates *************************
 * Nom/Date : Éventuellement la version                      *
 ********************* Description ***************************
-* Vous décrivez ici ce que fait cette fonction              *
+* Permet de selectionner une direction en cliquant sur un   *
+* monstre et en relachant sur une case                      *
 *********************** Entrées *****************************
-* Vous décrivez ici les données en entrée de la fonction    *
+* TGrid & grid: tableau correspondant à la grille           *
+* int mouseXcoord, int mouseYcoord: coordonnées de la souris*
+* Direction & direction: direction donnée pour le déplacer  *
+*                        le monstre                         *
+* SDL_Surface *s: surface de la fenêtre                     *
+* int currentLevel: correspond au numéro du niveau en cour  *
+* SDL_Event &event: variable d'évènement de du programme    *
 *********************** Sorties *****************************
-* Vous détaillez ici ce que renvoie la fonction             *
+*ne retourne rien                                           *
 ************************************************************/
-Direction mouvement (TGrid & grid, SDL_Event &event, Direction &direction, SDL_Surface *s, int mouseXcoord, int mouseYcoord, int currentLvl) {
+void mouvement (TGrid & grid, SDL_Event &event,SDL_Surface *s, int mouseXcoord, int mouseYcoord, int currentLvl) {
 
     int caseDirectionY = 0;
     int caseDirectionX = 0;
+
+    Direction direction = NONE;
 
     if(grid[mouseXcoord][mouseYcoord].type == 1 && event.button.button == SDL_BUTTON_LEFT){
 
@@ -536,21 +577,21 @@ Direction mouvement (TGrid & grid, SDL_Event &event, Direction &direction, SDL_S
         }
     }
 
-    while(direction != NONE) {
-        moveP(grid, mouseXcoord, mouseYcoord, direction, s, currentLvl);
-    }
+    if(direction != NONE)
+        moveMonster(grid, mouseXcoord, mouseYcoord, direction, s, currentLvl);
 
-    return direction;
 }
 
+
 /****************** Nom de la fonction **********************
-* NOM_FONCTION                                              *
+* checkWin                                                  *
 ******************** Auteur , Dates *************************
 * Nom/Date : Éventuellement la version                      *
 ********************* Description ***************************
-* Vous décrivez ici ce que fait cette fonction              *
+* Permet de savoir si on a fini un niveau en renvoyant vrai *
+* ou faux (s'il reste des dormeurs)                         *
 *********************** Entrées *****************************
-* Vous décrivez ici les données en entrée de la fonction    *
+* TGrid & grid: tableau correspondant à la grille           *
 *********************** Sorties *****************************
 * Vous détaillez ici ce que renvoie la fonction             *
 ************************************************************/
@@ -573,13 +614,18 @@ bool checkWin(TGrid grid) {
 }
 
 /****************** Nom de la fonction **********************
-* NOM_FONCTION                                              *
+* levelWin                                                  *
 ******************** Auteur , Dates *************************
 * Nom/Date : Éventuellement la version                      *
 ********************* Description ***************************
-* Vous décrivez ici ce que fait cette fonction              *
+* permet d'agir quand l'on termine un niveau :              *
+* on passe au niveau suivant ou on lance le screen de fin   *
+* puis on repasse au menu                                   *
 *********************** Entrées *****************************
-* Vous décrivez ici les données en entrée de la fonction    *
+* TGrid & grid: tableau correspondant à la grille           *
+* int &num: numero du niveau actuel                         *
+* State &state: statut du programme                         *
+* levelMax: entier correspondant au nombre max de niveau    *
 *********************** Sorties *****************************
 * Vous détaillez ici ce que renvoie la fonction             *
 ************************************************************/

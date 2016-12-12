@@ -57,8 +57,7 @@ void checkEditorKeyEvent(CaseType & choice) {
 * La grille en référence, les coordonnées de la souris      *
 * (X et Y par rapport à la grille)                          *
 *********************** Sorties *****************************
-* La fonction ne retourne rien mais modifie la grille par   *
-*                      référence                            *
+*                                                           *
 ************************************************************/
 void checkEditorMouseClickEvent(TGrid & grid, int coordX, int coordY, CaseType choice) {
 
@@ -99,14 +98,16 @@ void checkEditorMouseClickEvent(TGrid & grid, int coordX, int coordY, CaseType c
 ******************** Auteur , Dates *************************
 * Nom/Date : Éventuellement la version                      *
 ********************* Description ***************************
-* Fonction qui affiche le type de case selectionné (l'image)*
-*                 à coté du curseur                         *
+* Fonction qui charge l'affichage du de la case selectionné *
+*  (l'image) à coté du curseur en modifiant la surface      *
+*                        screen par référence               *
 *********************** Entrées *****************************
-* La surface de l'écran                                     *
-* Les coordonnées de la souris par rapport à la fenêtre     *
+* SDL_Surface *s: La surface de l'écran                     *
+* int mouseX, int mouseY: Les coordonnées de la souris par  *
+*                         rapport à la fenêtre              *
+*  int choice : la valeur du type de la case sélectionnée   *
 *********************** Sorties *****************************
-* Ne retourne rien mais modifie la surface de l'ecran par   *
-*                        référence                          *
+*                                                           *
 ************************************************************/
 void drawCursor(SDL_Surface *s, int mouseX, int mouseY, int choice) {
 
@@ -149,7 +150,8 @@ void drawCursor(SDL_Surface *s, int mouseX, int mouseY, int choice) {
 * Permet de selectionner un niveau lorsque l'on va dans     *
 *              l'éditeur de niveaux                         *
 *********************** Entrées *****************************
-* Coordonnées de la souris par rapport à la fenêtre         *
+*int mouseX, int mouseY: Coordonnées de la souris par rapport
+*                        à la fenêtre                       *
 *********************** Sorties *****************************
 * Retourne un entier correspondant au numéro selectionné    *
 * 0 si aucun niveau n'est selectionné                       *
@@ -213,7 +215,20 @@ void saveLevel(TGrid grid, int level) {
     }
 }
 
-bool isMouseOnEditorLevelButton(int mouseX, int mouseY) {
+/****************** Nom de la fonction **********************
+* isMouseOnEditorLevelButton                                *
+******************** Auteur , Dates *************************
+* Nom/Date : Éventuellement la version                      *
+********************* Description ***************************
+* Permet de savoir si la souris est positionnée sur le      *
+* bouton d'aide (éditeur) en renvoyant True or False        *
+*********************** Entrées *****************************
+*int mouseX, int mouseY: Coordonnées de la souris par rapport
+*                        à la fenêtre                       *
+*********************** Sorties *****************************
+* retourne un booléen                                       *
+************************************************************/
+bool isMouseOnEditorHelpButton(int mouseX, int mouseY) {
     // help button center : 242, 534, radius : 22
     int dx = mouseX - 242;
     int dy = mouseY - 534;
@@ -221,11 +236,24 @@ bool isMouseOnEditorLevelButton(int mouseX, int mouseY) {
     return dx * dx + dy * dy <= 22 * 22;
 }
 
-SDL_Surface* getEditorForeground(int mouseX, int mouseY) {
+/****************** Nom de la fonction **********************
+* setEditorForeground                                       *
+******************** Auteur , Dates *************************
+* Nom/Date : Éventuellement la version                      *
+********************* Description ***************************
+* Permet de charger la surface correspondant à l'aide sur la*
+* surface screen si la souris est sur le bouton aide        *
+*********************** Entrées *****************************
+*int mouseX, int mouseY: Coordonnées de la souris par rapport
+*                        à la fenêtre                       *
+* SDL_Surface *s: La surface de l'écran                     *
+*********************** Sorties *****************************
+* ne retoune rien                                           *
+************************************************************/
+void setEditorForeground(SDL_Surface *screen, int mouseX, int mouseY) {
 
-    if (isMouseOnEditorLevelButton(mouseX, mouseY)) {
-        return surf_EditorHelp;
-    } else {
-        return 0;
+    if (isMouseOnEditorHelpButton(mouseX, mouseY)) {
+         setScreenBackground(screen, surf_Transparency);
+         setScreenBackground(screen,  surf_EditorHelp);
     }
 }

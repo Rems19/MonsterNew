@@ -6,15 +6,15 @@ SDL_Surface* menuBackground_edit;
 SDL_Surface* menuBackground_quit;
 
 /****************** Nom de la fonction **********************
-* NOM_FONCTION                                              *
+* initMenu                                                  *
 ******************** Auteur , Dates *************************
 * Nom/Date : Éventuellement la version                      *
 ********************* Description ***************************
-* Vous décrivez ici ce que fait cette fonction              *
+* charge les surfaces du menu                               *
 *********************** Entrées *****************************
-* Vous décrivez ici les données en entrée de la fonction    *
+* n'a pas d'entrées                                          *
 *********************** Sorties *****************************
-* Vous détaillez ici ce que renvoie la fonction             *
+* ne retourne rien                                          *
 ************************************************************/
 void initMenu() {
     menuBackground_base = loadImage("assets/menuetedit.bmp");
@@ -24,15 +24,17 @@ void initMenu() {
 }
 
 /****************** Nom de la fonction **********************
-* NOM_FONCTION                                              *
+* isMouseOnPlayButton                                       *
 ******************** Auteur , Dates *************************
 * Nom/Date : Éventuellement la version                      *
 ********************* Description ***************************
-* Vous décrivez ici ce que fait cette fonction              *
+* Permet de savoir si la souris est sur le bouton Play      *
+* dans le menu                                              *
 *********************** Entrées *****************************
-* Vous décrivez ici les données en entrée de la fonction    *
+* int mouseX, int mouseY: Coordonnées de la souris par rapport
+*                        à la fenêtre                       *
 *********************** Sorties *****************************
-* Vous détaillez ici ce que renvoie la fonction             *
+* revoie un booléen: true or false                          *
 ************************************************************/
 bool isMouseOnPlayButton(int mouseX, int mouseY) {
     // Play button center : 148, 311   Radius : 53
@@ -41,15 +43,17 @@ bool isMouseOnPlayButton(int mouseX, int mouseY) {
 }
 
 /****************** Nom de la fonction **********************
-* NOM_FONCTION                                              *
+* isMouseOnEditButton                                       *
 ******************** Auteur , Dates *************************
 * Nom/Date : Éventuellement la version                      *
 ********************* Description ***************************
-* Vous décrivez ici ce que fait cette fonction              *
+* Permet de savoir si la souris est sur le bouton edtion    *
+* dans le menu                                              *
 *********************** Entrées *****************************
-* Vous décrivez ici les données en entrée de la fonction    *
+* int mouseX, int mouseY: Coordonnées de la souris par rapport
+*                        à la fenêtre                       *
 *********************** Sorties *****************************
-* Vous détaillez ici ce que renvoie la fonction             *
+* revoie un booléen: true or false                          *
 ************************************************************/
 bool isMouseOnEditButton(int mouseX, int mouseY) {
     // Edit button center : 186, 226   Radius : 26
@@ -58,15 +62,17 @@ bool isMouseOnEditButton(int mouseX, int mouseY) {
 }
 
 /****************** Nom de la fonction **********************
-* NOM_FONCTION                                              *
+* isMouseOnQuitButton                                       *
 ******************** Auteur , Dates *************************
 * Nom/Date : Éventuellement la version                      *
 ********************* Description ***************************
-* Vous décrivez ici ce que fait cette fonction              *
+* Permet de savoir si la souris est sur le bouton quitter   *
+* dans le menu                                              *
 *********************** Entrées *****************************
-* Vous décrivez ici les données en entrée de la fonction    *
+* int mouseX, int mouseY: Coordonnées de la souris par rapport
+*                        à la fenêtre                       *
 *********************** Sorties *****************************
-* Vous détaillez ici ce que renvoie la fonction             *
+* revoie un booléen: true or false                          *
 ************************************************************/
 bool isMouseOnQuitButton(int mouseX, int mouseY) {
     // Quit button center : 220, 370   Radius : 26
@@ -75,15 +81,17 @@ bool isMouseOnQuitButton(int mouseX, int mouseY) {
 }
 
 /****************** Nom de la fonction **********************
-* NOM_FONCTION                                              *
+* isMouseOnGameResetButton                                  *
 ******************** Auteur , Dates *************************
 * Nom/Date : Éventuellement la version                      *
 ********************* Description ***************************
-* Vous décrivez ici ce que fait cette fonction              *
+* Permet de savoir si la souris est sur le bouton reset     *
+* dans le jeu / editeur                                     *
 *********************** Entrées *****************************
-* Vous décrivez ici les données en entrée de la fonction    *
+* int mouseX, int mouseY: Coordonnées de la souris par rapport
+*                        à la fenêtre                       *
 *********************** Sorties *****************************
-* Vous détaillez ici ce que renvoie la fonction             *
+* revoie un booléen: true or false                          *
 ************************************************************/
 bool isMouseOnGameResetButton(int mouseX, int mouseY) {
     // Reset button center : 95, 530   Radius : 25
@@ -92,15 +100,18 @@ bool isMouseOnGameResetButton(int mouseX, int mouseY) {
 }
 
 /****************** Nom de la fonction **********************
-* NOM_FONCTION                                              *
+* getMenuBackground                                         *
 ******************** Auteur , Dates *************************
 * Nom/Date : Éventuellement la version                      *
 ********************* Description ***************************
-* Vous décrivez ici ce que fait cette fonction              *
+* Permet de retourner l'image de fond du menu en fonction   *
+* de la position de la souris (bouton plus gros quand on est*
+* deçu)                                                     *
 *********************** Entrées *****************************
-* Vous décrivez ici les données en entrée de la fonction    *
+*int mouseX, int mouseY: Coordonnées de la souris par rapport
+*à la fenêtre                                               *
 *********************** Sorties *****************************
-* Vous détaillez ici ce que renvoie la fonction             *
+* SDL_Surface* menuBackground : surface selectionné         *
 ************************************************************/
 SDL_Surface* getMenuBackground(int mouseX, int mouseY) {
 
@@ -120,15 +131,15 @@ SDL_Surface* getMenuBackground(int mouseX, int mouseY) {
 }
 
 /****************** Nom de la fonction **********************
-* NOM_FONCTION                                              *
+* freeMenuSurfaces                                          *
 ******************** Auteur , Dates *************************
 * Nom/Date : Éventuellement la version                      *
 ********************* Description ***************************
-* Vous décrivez ici ce que fait cette fonction              *
+* Nettoie les surfaces chargées en mémoires du menu         *
 *********************** Entrées *****************************
-* Vous décrivez ici les données en entrée de la fonction    *
+*il n'y a pas d'entrées                                     *
 *********************** Sorties *****************************
-* Vous détaillez ici ce que renvoie la fonction             *
+* ne retourne rien                                          *
 ************************************************************/
 void freeMenuSurfaces() {
     SDL_FreeSurface(menuBackground_base);

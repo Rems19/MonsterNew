@@ -10,7 +10,7 @@ void initSDL();
 
 // Resource loading
 SDL_Surface* loadImage(std::string filename);
-SDL_Surface* loadImageWithColorKey(std::string filename, int r, int g, int b);
+SDL_Surface* loadImageWithColorKey(std::string filename, int r, int g, int b, int alpha);
 
 // Drawing methods
 void applySurface(int x, int y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip);

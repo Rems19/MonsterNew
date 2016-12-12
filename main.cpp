@@ -22,8 +22,6 @@ int main() {
 
     CaseType choice = MONSTER;          //Initialisation de la variable choice qui correspond à l'élement sélectionné dans l'éditeur (par défaut le monstre)
 
-    Direction direction = NONE;         //Initialisation d'une variable Direction qui sert au déplacement du monstre
-
     initSDL();                          //Initialisation de l'ensemble des fonctions relatives à la SDL
 
     SDL_Surface* screen;                //initialisation d'une surface propre à la SDL qui sera la surface principale affichée dans notre fenêtre
@@ -39,11 +37,9 @@ int main() {
     int mouseX, mouseY;                 // Cursor coordinates in pixels
     int mouseXCoord, mouseYCoord;       // Coordinates of the case pointed by the cursor
 
-    // SDL_SetAlpha(surf_background,SDL_SRCALPHA , 125)    ; //ajoute un effet intéressant à voir
+    //SDL_SetAlpha(surf_background,SDL_SRCALPHA , 125)    ; //ajoute un effet intéressant à voir
 
-    while ( !quit && SDL_WaitEvent(&event) ) {
-
-        SDL_PollEvent(&event);                                          // on récupère les évênements dans event
+    while ( !quit && SDL_WaitEvent(&event) ) {       
 
         switch (event.type) {                                           //on fait un switch pour gérer les différents évènements
 
@@ -138,7 +134,7 @@ int main() {
 
         } else if (state == GAME) {                                                 //si on est dans le jeu
 
-            mouvement(grid, event, direction, screen, mouseXCoord, mouseYCoord, currentLevel); // on se charge du déplacement du monstre
+            mouvement(grid, event, screen, mouseXCoord, mouseYCoord, currentLevel); // on se charge du déplacement du monstre
             setScreenBackground(screen, surf_background);                           //on charge le fond relatif au jeu
             draw(grid, screen);                                                     //on charge l'affichage de la grille dans la surface screen
             levelWin(grid, screen, currentLevel, state, maxLevel);                  //on lance levelWin qui permet de vérifier si
@@ -149,7 +145,7 @@ int main() {
             setScreenBackground(screen, surf_backgroundEditor);                     //on affiche le background de l editeur
             draw(grid, screen);                                                     //on affiche les éléments de la grille
             drawCursor(screen, mouseX, mouseY, choice);                             //on affiche la sélection à coté du curseur
-            setScreenBackground(screen, getEditorForeground(mouseX, mouseY));       //on superpose l'aide au background si on passe la souris sur le bouton help
+            setEditorForeground(screen, mouseX, mouseY);                            //on superpose l'aide au background si on passe la souris sur le bouton help
 
             checkEditorKeyEvent(choice);                                            //on gère les évènements relatifs au clavier
             checkEditorMouseClickEvent(grid, mouseXCoord, mouseYCoord, choice);     //on gère les évènements relatifs à la souris
@@ -168,4 +164,5 @@ int main() {
 
     return EXIT_SUCCESS;                                                            //on retourne EXIT_SUCCESS lors de la fermeture du programme
 }
+
 

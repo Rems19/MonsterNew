@@ -1,5 +1,8 @@
 #include "screen.h"
+#include "affichage/surfaces.h"
+
 #include <iostream>
+
 
 /****************** Nom de la fonction **********************
 * initScreen                                                *
@@ -15,7 +18,10 @@
 *                                                           *
 ************************************************************/
 void initScreen(SDL_Surface* & screen) {
-    screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE);
+    SDL_WM_SetIcon(SDL_LoadBMP("assets/icone.bmp"), 0 );
+    screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE |SDL_DOUBLEBUF);
+
+    SDL_WM_SetCaption("Monster", NULL);
 }
 
 /****************** Nom de la fonction **********************

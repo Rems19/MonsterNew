@@ -9,6 +9,6 @@ void checkEditorMouseClickEvent(TGrid &grid, int coordX, int coordY, CaseType ch
 void saveLevel(TGrid grid, int level);
 void drawCursor(SDL_Surface *s, int mouseX, int mouseY, int choice);
 int levelSelect(int mouseX, int mouseY);
-SDL_Surface* getEditorForeground(int mouseX, int mouseY);
+void setEditorForeground(SDL_Surface *screen, int mouseX, int mouseY);
 
 #endif // EDITOR_H
