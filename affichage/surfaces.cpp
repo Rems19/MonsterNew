@@ -18,7 +18,7 @@ SDL_Surface *surf_winEnd;
 SDL_Surface *surf_backgroundEditor;
 SDL_Surface *surf_EditorHelp;
 SDL_Surface *surf_Transparency;
-SDL_Surface *surf_icone;
+
 struct ColorKey {
     int r, g, b;
 };
@@ -74,8 +74,7 @@ void loadSurfaces() {
     surf_droite = loadSurface("droite.png", {0, 255, 255},255);
     surf_dormeur = loadSurface("dormeur.png", {0, 255, 255},255);
     surf_glacon = loadSurface("glacon.png", {0, 255, 255},255);
-    surf_monstre = loadSurface("monstre.png", {0, 255, 255},255);
-    surf_icone = loadSurface("icone.bmp", {0, 255, 255},255);
+    surf_monstre = loadSurface("monstre.png", {0, 255, 255},255);    
     surf_livre = loadSurface("livre.png", {0, 255, 255},255);
     surf_menu = loadSurface("menuetedit.bmp");
     surf_win = loadSurface("winSprite.bmp");
@@ -112,6 +111,5 @@ void freeSurfaces() {
     SDL_FreeSurface(surf_winEnd);
     SDL_FreeSurface(surf_EditorHelp);
     SDL_FreeSurface(surf_backgroundEditor);
-    SDL_FreeSurface(surf_Transparency);
-    SDL_FreeSurface(surf_icone);
+    SDL_FreeSurface(surf_Transparency);    
 }
