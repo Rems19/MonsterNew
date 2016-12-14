@@ -3,6 +3,7 @@
 #include "affichage/screen.h"
 #include "menu/menu.h"
 #include "game/grid.h"
+#include "game/monster.h"
 #include "editor/editor.h"
 #include "affichage/surfaces.h"
 

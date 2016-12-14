@@ -10,7 +10,8 @@ SOURCES += main.cpp \
     affichage/sdl_funcs.cpp \
     menu/menu.cpp \
     editor/editor.cpp \
-    affichage/surfaces.cpp
+    affichage/surfaces.cpp \
+    game/monster.cpp
 
 LIBS += `sdl-config --libs` -lSDL_image -lSDL_ttf
 
@@ -23,7 +24,8 @@ HEADERS += \
     menu/menu.h \
     editor/editor.h \
     affichage/surfaces.h \
-    main.h
+    main.h \
+    game/monster.h
 
 DISTFILES += \
     assets/background.bmp \
