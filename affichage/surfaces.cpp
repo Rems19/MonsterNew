@@ -21,6 +21,7 @@ SDL_Surface *surf_backgroundEditor;
 SDL_Surface *surf_EditorHelp;
 SDL_Surface *surf_Transparency;
 
+
 struct ColorKey {
     int r, g, b;
 };

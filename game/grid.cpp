@@ -108,7 +108,7 @@ void draw(TGrid grid, SDL_Surface *s) {
             switch (grid[i][j].type) {
 
             case MONSTER:
-                applySurface(x, y, surf_monstre, s, NULL);
+                applySurface(x + 5, y, surf_monstre, s, NULL);
                 break;
             case ICE:
                 applySurface(x-2 , y - 8, surf_glacon, s, NULL);
@@ -383,7 +383,7 @@ void animMonster(TGrid & grid, SDL_Surface *s, Direction & direction,int x, int 
         directionToMoveXY(direction, i, j);
         setScreenBackground(s,surf_background);
         draw(grid, s);
-        applySurface(i,j,surf_monstre,s,NULL);
+        applySurface(i + 5,j,surf_monstre,s,NULL);
         SDL_Flip(s);
         SDL_Delay(DELAY);
     }

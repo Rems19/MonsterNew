@@ -18,8 +18,8 @@
 *                                                           *
 ************************************************************/
 void initScreen(SDL_Surface* & screen) {
-
-    SDL_WM_SetIcon(SDL_LoadBMP("assets/icone.bmp"), 0 );                                                //icone de l'appli
+    SDL_Surface *icone = SDL_LoadBMP("assets/icone.bmp");
+    SDL_WM_SetIcon(icone, 0 );                                                //icone de l'appli
     screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE |SDL_DOUBLEBUF);   //création fenêtre
     SDL_WM_SetCaption("Monster", NULL);                                                                 //titre fenêtre
 }
