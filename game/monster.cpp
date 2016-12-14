@@ -115,21 +115,19 @@ void checkColAroundMonster(TGrid & grid, int x, int y) {
 }
 
 /****************** Nom de la fonction **********************
-* moveMonster                                               *
+* moveXYAccordingToDirection                                *
 ******************** Auteur , Dates *************************
 * Nom/Date : Éventuellement la version                      *
 ********************* Description ***************************
-* Permet de déplacer le monstre à partir d'un direction     *
-* et d'agir en fonction de ce déplacement (collisions,      *
-*sortie, changement de direction, modification de la grille,*
-* affichage)                                                *
+* Permet d'incrémenter des coefficients x et y en fonction  *
+* de la direction (qui permettent d'avoir la position des   *
+* cases suivantes)                                          *
 *********************** Entrées *****************************
 * TGrid & grid: tableau correspondant à la grille           *
 * int x, int y: coordonnées de la case du monstre           *
 * Direction & direction: direction donnée pour le déplacer  *
 *                        le monstre                         *
 * SDL_Surface *s: surface de la fenêtre                     *
-* int num: correspond au numéro du niveau en cour           *
 *********************** Sorties *****************************
 * ne retourne rien (référence)                              *
 ************************************************************/
@@ -164,7 +162,9 @@ void moveXYAccordingToDirection(Direction direction, int & x, int & y) {
 ******************** Auteur , Dates *************************
 * Nom/Date : Éventuellement la version                      *
 ********************* Description ***************************
-* Permet d'affecter les coor                                            *
+* Permet de déterminer et d'affecter les coordonnées de la  *
+* case final du monstre après déplacement dans une          *
+* direction                                                 *
 *********************** Entrées *****************************
 * TGrid & grid: tableau correspondant à la grille           *
 * int x, int y: coordonnées de la case du monstre           *
@@ -173,7 +173,6 @@ void moveXYAccordingToDirection(Direction direction, int & x, int & y) {
 * Direction & direction: direction donnée pour le déplacer  *
 *                        le monstre                         *
 * SDL_Surface *s: surface de la fenêtre                     *
-* int num: correspond au numéro du niveau en cour           *
 *********************** Sorties *****************************
 * ne retourne rien (référence)                              *
 ************************************************************/

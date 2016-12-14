@@ -1,6 +1,6 @@
 #include "screen.h"
 #include "affichage/surfaces.h"
-
+#include <SDL/SDL_getenv.h>
 #include <iostream>
 
 
@@ -20,7 +20,12 @@
 void initScreen(SDL_Surface* & screen) {
     SDL_Surface *icone = SDL_LoadBMP("assets/icone.bmp");
     SDL_WM_SetIcon(icone, 0 );                                                //icone de l'appli
-    screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE |SDL_DOUBLEBUF);   //création fenêtre
+
+    putenv("SDL_VIDEO_WINDOW_POS=center"); //pour centrer la fenêtre
+    screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE |SDL_DOUBLEBUF | SDL_RESIZABLE);   //création fenêtre
+
+
+
     SDL_WM_SetCaption("Monster", NULL);                                                                 //titre fenêtre
 }
 

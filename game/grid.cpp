@@ -85,7 +85,7 @@ void draw(TGrid grid, SDL_Surface *s) {
     for(int i = 0; i < WIDTH; i++) {
         for(int j = 0; j < HEIGHT; j++) {
 
-            coordsToPixels(i, j, x, y);   //on récupère la position en pixel de la case selectionnée
+            coordsToPixels(i, j, x, y);
 
             switch (grid[i][j].direction) {
 

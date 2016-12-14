@@ -147,3 +147,4 @@ void freeMenuSurfaces() {
     SDL_FreeSurface(menuBackground_edit);
     SDL_FreeSurface(menuBackground_quit);
 }
+

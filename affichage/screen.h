@@ -5,7 +5,7 @@
 
 
 const int SCREEN_WIDTH = 320;
-const int SCREEN_HEIGHT = 568;
+const int SCREEN_HEIGHT = 512;
 const int SCREEN_BPP = 32;
 
 void initScreen(SDL_Surface* & screen);

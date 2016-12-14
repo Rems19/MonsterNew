@@ -38,9 +38,7 @@ int main() {
     int mouseX, mouseY;                 // Cursor coordinates in pixels
     int mouseXCoord, mouseYCoord;       // Coordinates of the case pointed by the cursor
 
-    //SDL_SetAlpha(surf_background,SDL_SRCALPHA , 125)    ; //ajoute un effet intéressant à voir
-
-    while ( !quit && SDL_WaitEvent(&event) ) {       
+    while ( !quit && SDL_WaitEvent(&event) ) {
 
         switch (event.type) {                                           //on fait un switch pour gérer les différents évènements
 
