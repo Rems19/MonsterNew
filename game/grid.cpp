@@ -228,20 +228,20 @@ bool sortie(int x, int y, Direction direction){
 *********************** Sorties *****************************
 * retourne vrai s'il y a eu collision false sinon           *
 ************************************************************/
-int collisionWith(TGrid & grid, int x, int y) {
+CaseType collisionWith(TGrid & grid, int x, int y) {
 
-    int col = 0;
+    CaseType col = EMPTY;
 
     switch(grid[x][y].type) {
     case ICE:
 
         grid[x][y].type = EMPTY;
-        col = 1;
+        col = ICE;
         break;
 
     case SLEEPER:
         grid[x][y].type = MONSTER;
-        col = 2;
+        col = SLEEPER;
         break;
 
     default: break;
@@ -292,7 +292,7 @@ void checkColAroundMonster(TGrid & grid, int x, int y) {
 }
 
 
-void directionToMoveXY(Direction direction, int & x, int & y) {
+void moveXYAccordingToDirection(Direction direction, int & x, int & y) {
 
     switch (direction) {
     case RIGHT:
@@ -331,7 +331,7 @@ Direction findNextCase(TGrid & grid, Direction direction, int x, int y, int & ca
     int dx = 0;
     int dy = 0;
 
-    directionToMoveXY(direction, dx, dy);
+    moveXYAccordingToDirection(direction, dx, dy);
     caseDir = grid[x][y].direction;
     nextCaseType = grid[x + dx][y + dy].type;
 
@@ -344,7 +344,7 @@ Direction findNextCase(TGrid & grid, Direction direction, int x, int y, int & ca
 
             } else {
                 caseDir = grid[x + dx][y + dy].direction;
-                directionToMoveXY(direction, dx, dy);
+                moveXYAccordingToDirection(direction, dx, dy);
                 nextCaseType = grid[x + dx][y + dy].type;
             }
         }
@@ -354,7 +354,7 @@ Direction findNextCase(TGrid & grid, Direction direction, int x, int y, int & ca
         dx = 0;
         dy = 0;
 
-        directionToMoveXY(direction, dx, dy);
+        moveXYAccordingToDirection(direction, dx, dy);
 
         caseFinalx -= dx;
         caseFinaly -= dy;
@@ -380,7 +380,7 @@ void animMonster(TGrid & grid, SDL_Surface *s, Direction & direction,int x, int 
     coordsToPixels(caseFinalx, caseFinaly, coordCaseFinalx, coordCaseFinaly);
 
     while( i != coordCaseFinalx || j != coordCaseFinaly  ) {
-        directionToMoveXY(direction, i, j);
+        moveXYAccordingToDirection(direction, i, j);
         setScreenBackground(s,surf_background);
         draw(grid, s);
         applySurface(i + 5,j,surf_monstre,s,NULL);
@@ -439,8 +439,6 @@ void animGlacon(TGrid & grid, SDL_Surface *s,int x, int y) {
 ************************************************************/
 void moveMonster(TGrid & grid, int x, int y, Direction & direction, SDL_Surface *s, int num){
 
-
-
     int caseFinalx;
     int caseFinaly;
 
@@ -456,8 +454,6 @@ void moveMonster(TGrid & grid, int x, int y, Direction & direction, SDL_Surface 
     /***********************************************************************************
  ******** evenement après deplacement du monstre
  ********************************************************************************/
-    int collision = 0;
-
     if (nextCaseDir != NONE) {      // si la case sur laquelle on est une direction on la modifie
         direction = nextCaseDir;
     }
@@ -473,10 +469,9 @@ void moveMonster(TGrid & grid, int x, int y, Direction & direction, SDL_Surface 
         colWithX = caseFinalx;
         colWithY = caseFinaly;
 
-        directionToMoveXY(direction, colWithX, colWithY);
-        collision = collisionWith(grid, colWithX,colWithY);
+        moveXYAccordingToDirection(direction, colWithX, colWithY);
 
-        if( collision == 1) animGlacon(grid, s, colWithX, colWithY);
+        if( collisionWith(grid, colWithX,colWithY) == ICE) animGlacon(grid, s, colWithX, colWithY);
 
         setScreenBackground(s,surf_background);
         draw(grid, s);
