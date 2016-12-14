@@ -396,19 +396,17 @@ void animGlacon(TGrid & grid, SDL_Surface *s,int x, int y) {
 
     coordsToPixels(x, y, coordCasex, coordCasey);
 
-    for (int i = 0; i < 3; i++ ) {
+    for (int i = 0; i < 2; i++ ) {
 
         setScreenBackground(s,surf_background);
         draw(grid, s);
 
         switch(i) {
+
         case 0:
-            applySurface(coordCasex -2,coordCasey -8, surf_glacon, s, NULL);
-            break;
-        case 1:
             applySurface(coordCasex -2,coordCasey -8, surf_glacon1, s, NULL);
             break;
-        case 2:
+        case 1:
             applySurface(coordCasex-2,coordCasey -8, surf_glacon2, s, NULL);
             break;
         }

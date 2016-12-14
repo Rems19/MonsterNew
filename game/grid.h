@@ -26,7 +26,7 @@ const int CASE_WIDTH = (SCREEN_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / WIDTH;
 const int CASE_HEIGHT = (SCREEN_HEIGHT - MARGIN_TOP - MARGIN_BOTTOM) / HEIGHT;
 
 //Slow Animation
-const int DELAY = 1;
+const int DELAY = 2;
 
 enum Direction { NONE = 0, UP = 1, DOWN = -1, LEFT = 2, RIGHT = -2 };
 
