@@ -10,6 +10,8 @@ SDL_Surface *surf_gauche;
 SDL_Surface *surf_droite;
 SDL_Surface *surf_dormeur;
 SDL_Surface *surf_glacon;
+SDL_Surface *surf_glacon1;
+SDL_Surface *surf_glacon2;
 SDL_Surface *surf_monstre;
 SDL_Surface *surf_livre;
 SDL_Surface *surf_menu;
@@ -74,6 +76,8 @@ void loadSurfaces() {
     surf_droite = loadSurface("droite.png", {0, 255, 255},255);
     surf_dormeur = loadSurface("dormeur.png", {0, 255, 255},255);
     surf_glacon = loadSurface("glacon.png", {0, 255, 255},255);
+    surf_glacon1 = loadSurface("glacon2.png", {0, 255, 255},255);
+    surf_glacon2 = loadSurface("glacon3.png", {0, 255, 255},255);
     surf_monstre = loadSurface("monstre.png", {0, 255, 255},255);    
     surf_livre = loadSurface("livre.png", {0, 255, 255},255);
     surf_menu = loadSurface("menuetedit.bmp");
@@ -104,6 +108,8 @@ void freeSurfaces() {
     SDL_FreeSurface(surf_droite);
     SDL_FreeSurface(surf_dormeur);
     SDL_FreeSurface(surf_glacon);
+    SDL_FreeSurface(surf_glacon1);
+    SDL_FreeSurface(surf_glacon2);
     SDL_FreeSurface(surf_monstre);
     SDL_FreeSurface(surf_livre);
     SDL_FreeSurface(surf_menu);

@@ -11,6 +11,8 @@ extern SDL_Surface *surf_gauche;
 extern SDL_Surface *surf_droite;
 extern SDL_Surface *surf_dormeur;
 extern SDL_Surface *surf_glacon;
+extern SDL_Surface *surf_glacon1;
+extern SDL_Surface *surf_glacon2;
 extern SDL_Surface *surf_monstre;
 extern SDL_Surface *surf_livre;
 extern SDL_Surface *surf_menu;

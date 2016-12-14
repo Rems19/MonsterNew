@@ -292,6 +292,134 @@ void checkColAroundMonster(TGrid & grid, int x, int y) {
 }
 
 
+void directionToMoveXY(Direction direction, int & x, int & y) {
+
+    switch (direction) {
+    case RIGHT:
+        x += 1;
+        y += 0;
+        break;
+    case LEFT:
+        x += -1;
+        y += 0;
+        break;
+    case UP:
+        x += 0;
+        y += -1;
+        break;
+    case DOWN:
+        x += 0;
+        y += 1;
+        break;
+    default:
+        x += 0;
+        y += 0;
+        break;
+    }
+}
+
+Direction findNextCase(TGrid & grid, Direction direction, int x, int y, int & caseFinalx, int & caseFinaly) {
+
+    CaseType nextCaseType;
+    Direction caseDir;
+
+    caseFinalx = x;
+    caseFinaly = y;
+
+    bool stop = false;
+
+    int dx = 0;
+    int dy = 0;
+
+    directionToMoveXY(direction, dx, dy);
+    caseDir = grid[x][y].direction;
+    nextCaseType = grid[x + dx][y + dy].type;
+
+    if(direction != NONE) {
+
+        while (!stop) {
+
+            if ((caseDir != NONE && caseDir != direction) || ( nextCaseType != EMPTY) || x + dx == WIDTH  ||y + dy == HEIGHT  || y + dy == -1 || x + dx == -1 ) {
+                stop = true;
+
+            } else {
+                caseDir = grid[x + dx][y + dy].direction;
+                directionToMoveXY(direction, dx, dy);
+                nextCaseType = grid[x + dx][y + dy].type;
+            }
+        }
+        caseFinalx += dx;
+        caseFinaly += dy;
+
+        dx = 0;
+        dy = 0;
+
+        directionToMoveXY(direction, dx, dy);
+
+        caseFinalx -= dx;
+        caseFinaly -= dy;
+
+        if(caseFinalx == x && caseFinaly == y && grid[x][y].direction != NONE) {
+            caseDir = NONE;    //si on est bloqué par un obstacle et que l'on reste sur place
+        }
+    }
+
+    return caseDir;
+}
+
+void animMonster(TGrid & grid, SDL_Surface *s, Direction & direction,int x, int y,  int caseFinalx, int caseFinaly) {
+
+    int i;
+    int j;
+
+    int coordCaseFinalx;
+    int coordCaseFinaly;
+
+    coordsToPixels(x, y, i, j);
+
+    coordsToPixels(caseFinalx, caseFinaly, coordCaseFinalx, coordCaseFinaly);
+
+    while( i != coordCaseFinalx || j != coordCaseFinaly  ) {
+        directionToMoveXY(direction, i, j);
+        setScreenBackground(s,surf_background);
+        draw(grid, s);
+        applySurface(i,j,surf_monstre,s,NULL);
+        SDL_Flip(s);
+        SDL_Delay(DELAY);
+    }
+}
+
+
+void animGlacon(TGrid & grid, SDL_Surface *s,int x, int y) {
+    int coordCasex;
+    int coordCasey;
+
+    coordsToPixels(x, y, coordCasex, coordCasey);
+
+    for (int i = 0; i < 3; i++ ) {
+
+        setScreenBackground(s,surf_background);
+        draw(grid, s);
+
+        switch(i) {
+        case 0:
+            applySurface(coordCasex -2,coordCasey -8, surf_glacon, s, NULL);
+            break;
+        case 1:
+            applySurface(coordCasex -2,coordCasey -8, surf_glacon1, s, NULL);
+            break;
+        case 2:
+            applySurface(coordCasex-2,coordCasey -8, surf_glacon2, s, NULL);
+            break;
+        }
+
+        SDL_Flip(s);
+        SDL_Delay(100);
+    }
+
+}
+
+
 /****************** Nom de la fonction **********************
 * moveMonster                                               *
 ******************** Auteur , Dates *************************
@@ -313,217 +441,55 @@ void checkColAroundMonster(TGrid & grid, int x, int y) {
 ************************************************************/
 void moveMonster(TGrid & grid, int x, int y, Direction & direction, SDL_Surface *s, int num){
 
-    int i;
-    int j;
-
-    coordsToPixels(x, y, i, j);
-
-    int caseFinalx = x;
-    int caseFinaly = y;
-
-    int coordCaseFinalx = 0;
-    int coordCaseFinaly = 0;
-
-    int delay = 2; // Changer la vitesse de l'animation ici
-
-    CaseType nextCaseType;
-    Direction caseDir;
-
-    if(direction == RIGHT){
-
-        bool stop = false;
-        int dx = 0;
-        while (!stop) {
-            nextCaseType = grid[x + dx + 1][y].type;
-            caseDir = grid[x + dx][y].direction;
-            if ((caseDir != NONE && caseDir != RIGHT) || ( nextCaseType != EMPTY)  || x + dx == WIDTH - 1)
-                stop = true;
-            else dx++;
-        }
-        caseFinalx += dx;
-
-        if(dx == 0 && grid[x][y].direction != NONE) {
-            caseDir = NONE;    //si on est bloqué par un obstacle et que l'on reste sur place
-        }
-
-        grid[x][y].type = EMPTY;
-        coordsToPixels(caseFinalx, caseFinaly, coordCaseFinalx, coordCaseFinaly);
-
-        while(i < coordCaseFinalx){
-            i++;
-            setScreenBackground(s,surf_background);
-            draw(grid, s);
-            applySurface(i,j,surf_monstre,s,NULL);
-            SDL_Flip(s);
-            SDL_Delay(delay);
-        }
-
-        grid[caseFinalx][caseFinaly].type = MONSTER;
-    }
-
-    if(direction == DOWN){
-
-        bool stop = false;
-        int dy = 0;
-        while (!stop) {
-            nextCaseType = grid[x][y + dy + 1].type;
-            caseDir = grid[x][y + dy].direction;
-            if ((caseDir != NONE && caseDir != DOWN) || ( nextCaseType != EMPTY) || y + dy == HEIGHT - 1)
-                stop = true;
-            else dy++;
-        }
-        caseFinaly += dy;
-
-        if(dy == 0 && grid[x][y].direction != NONE) {
-            caseDir = NONE;    //si on est bloqué par un obstacle et que l'on reste sur place
-        }
-
-        grid[x][y].type = EMPTY;
-        coordsToPixels(caseFinalx, caseFinaly, coordCaseFinalx, coordCaseFinaly);
-
-        while(j < coordCaseFinaly){
-            j++;
-            setScreenBackground(s,surf_background);
-            draw(grid, s);
-            applySurface(i,j,surf_monstre,s,NULL);
-            SDL_Flip(s);
-            SDL_Delay(delay);
-        }
-        grid[caseFinalx][caseFinaly].type = MONSTER;
 
 
-    }
+    int caseFinalx;
+    int caseFinaly;
 
-    if(direction == UP){
+    Direction nextCaseDir = findNextCase(grid, direction, x, y, caseFinalx, caseFinaly );
 
-        bool stop = false;
-        int dy = 0;
-        while (!stop) {
-            nextCaseType = grid[x][y - dy - 1].type;
-            caseDir = grid[x][y - dy].direction;
-            if ((caseDir != NONE && caseDir != UP) || ( nextCaseType != EMPTY) || y - dy == 0)
-                stop = true;
-            else dy++;
-        }
-        caseFinaly -= dy;
+    grid[x][y].type = EMPTY;
 
-        if(dy == 0 && grid[x][y].direction != NONE) {
-            caseDir = NONE;    //si on est bloqué par un obstacle et que l'on reste sur place
-        }
+    animMonster(grid, s, direction, x, y, caseFinalx, caseFinaly);
 
-        grid[x][y].type = EMPTY;
-        coordsToPixels(caseFinalx, caseFinaly, coordCaseFinalx, coordCaseFinaly);
+    grid[caseFinalx][caseFinaly].type = MONSTER;
 
-
-        while(j > coordCaseFinaly){
-            j--;
-            setScreenBackground(s,surf_background);
-            draw(grid, s);
-            applySurface(i,j,surf_monstre,s,NULL);
-            SDL_Flip(s);
-            SDL_Delay(delay);
-
-        }
-
-        grid[caseFinalx][caseFinaly].type = MONSTER;
-
-
-    }
-
-    if(direction == LEFT){
-
-        bool stop = false;
-        int dx = 0;
-        while (!stop) {
-            nextCaseType = grid[x - dx - 1][y].type;
-            caseDir = grid [x - dx][y].direction;
-            if ((caseDir != NONE && caseDir != LEFT) || ( nextCaseType != EMPTY) || x - dx == 0)
-                stop = true;
-            else dx++;
-        }
-        caseFinalx -= dx;
-
-        if(dx == 0 && grid[x][y].direction != NONE) {
-            caseDir = NONE;    //si on est bloqué par un obstacle et que l'on reste sur place
-        }
-
-        grid[x][y].type = EMPTY;
-        coordsToPixels(caseFinalx, caseFinaly, coordCaseFinalx, coordCaseFinaly);
-
-        while(i > coordCaseFinalx){
-            i--;
-            setScreenBackground(s,surf_background);
-            draw(grid, s);
-            applySurface(i,j,surf_monstre,s,NULL);
-            SDL_Flip(s);
-            SDL_Delay(delay);
-        }
-        grid[caseFinalx][caseFinaly].type = MONSTER;
-    }
 
     /***********************************************************************************
  ******** evenement après deplacement du monstre
  ********************************************************************************/
-    Direction dir = caseDir;
-    bool collision = false;
+    int collision = 0;
 
-    if (dir != NONE) {      // si la case sur laquelle on est une direction on la modifie
-        direction = dir;
+    if (nextCaseDir != NONE) {      // si la case sur laquelle on est une direction on la modifie
+        direction = nextCaseDir;
     }
 
     if(sortie(caseFinalx,caseFinaly,direction) == true) {
         initGrid(grid);
         loadLevel(grid, num);
     } else {
-        int colWithX = 0;
-        int colWithY = 0;
 
-        switch(direction){
-        case RIGHT :
-            colWithX = caseFinalx+1;
-            colWithY = caseFinaly;
-            collision = collisionWith(grid, colWithX,colWithY);
-            setScreenBackground(s,surf_background);
-            draw(grid, s);
-            SDL_Flip(s);
-            break;
-        case LEFT :
-            colWithX = caseFinalx-1;
-            colWithY = caseFinaly;
-            collision = collisionWith(grid, colWithX,colWithY);
-            setScreenBackground(s,surf_background);
-            draw(grid, s);
-            SDL_Flip(s);
-            break;
-        case UP :
-            colWithX = caseFinalx;
-            colWithY = caseFinaly-1;
-            collision = collisionWith(grid, colWithX,colWithY);
-            setScreenBackground(s,surf_background);
-            draw(grid, s);
-            SDL_Flip(s);
-            break;
-        case DOWN :
-            colWithX = caseFinalx;
-            colWithY = caseFinaly+1;
-            collision = collisionWith(grid, colWithX,colWithY);
-            setScreenBackground(s,surf_background);
-            draw(grid, s);
-            SDL_Flip(s);
-            break;
-        default:
-            break;
-        }
-        if(collision) SDL_Delay(200);
+        int colWithX;
+        int colWithY;
 
-        if (dir != NONE){
+        colWithX = caseFinalx;
+        colWithY = caseFinaly;
+
+        directionToMoveXY(direction, colWithX, colWithY);
+        collision = collisionWith(grid, colWithX,colWithY);
+
+        if( collision == 1) animGlacon(grid, s, colWithX, colWithY);
+
+        setScreenBackground(s,surf_background);
+        draw(grid, s);
+        SDL_Flip(s);
+
+        if (nextCaseDir != NONE){
             moveMonster(grid, caseFinalx, caseFinaly, direction, s, num);
         } else {
             checkColAroundMonster(grid, caseFinalx, caseFinaly);
         }
     }
-
-    direction = NONE;
 }
 
 /****************** Nom de la fonction **********************
