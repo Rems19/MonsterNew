@@ -19,7 +19,10 @@ SDL_Surface *surf_win;
 SDL_Surface *surf_winEnd;
 SDL_Surface *surf_backgroundEditor;
 SDL_Surface *surf_EditorHelp;
+SDL_Surface *surf_EditorHelp2;
 SDL_Surface *surf_Transparency;
+SDL_Surface *surf_backgroundEditor2;
+SDL_Surface *surf_cursor;
 
 
 struct ColorKey {
@@ -88,8 +91,13 @@ void loadSurfaces() {
     surf_win = loadSurface("winSprite.bmp");
     surf_winEnd = loadSurface("winEndSprite.bmp");
     surf_backgroundEditor = loadSurface("background2.bmp");
+    surf_backgroundEditor2 = loadSurface("border.png", {0, 255, 255},255);
     surf_EditorHelp = loadSurface("EditorHelp.bmp", {0, 255, 255},255);
+    surf_EditorHelp2 = loadSurface("EditorHelp2.png", {0, 255, 255},255);;
+    surf_cursor = loadSurface("select.bmp", {0, 255, 255},255);
     surf_Transparency = loadSurface("transparent.bmp", {0, 255, 255},190);
+
+
 }
 
 /****************** Nom de la fonction **********************
@@ -122,5 +130,8 @@ void freeSurfaces() {
     SDL_FreeSurface(surf_winEnd);
     SDL_FreeSurface(surf_EditorHelp);
     SDL_FreeSurface(surf_backgroundEditor);
+    SDL_FreeSurface(surf_backgroundEditor2);
     SDL_FreeSurface(surf_Transparency);    
+    SDL_FreeSurface(surf_cursor);
+
 }

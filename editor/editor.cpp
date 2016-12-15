@@ -1,5 +1,6 @@
 #include "editor.h"
 
+
 /****************** Nom de la fonction **********************
 * checkEditorKeyEvent                                       *
 ******************** Auteur , Dates *************************
@@ -109,36 +110,64 @@ void checkEditorMouseClickEvent(TGrid & grid, int coordX, int coordY, CaseType c
 *********************** Sorties *****************************
 *                                                           *
 ************************************************************/
-void drawCursor(SDL_Surface *s, int mouseX, int mouseY, int choice) {
+void drawCursor(SDL_Surface *s, int mouseX, int mouseY, int choice, int modeEditor) {
 
     if((mouseX && mouseY) != 0) {
+
         switch (choice) {
 
         case MONSTER :
-            applySurface(mouseX, mouseY, surf_monstre, s, NULL);
+            if(modeEditor == 1)
+                applySurface(mouseX, mouseY, surf_monstre, s, NULL);
+            else
+                applySurface(385,13,surf_cursor,s, NULL);
             break;
         case ICE:
-            applySurface(mouseX, mouseY, surf_glacon, s, NULL);
+            if(modeEditor == 1)
+                applySurface(mouseX, mouseY, surf_glacon, s, NULL);
+            else
+                applySurface(385,83,surf_cursor,s, NULL);
             break;
         case BOOK:
-            applySurface(mouseX, mouseY, surf_livre, s, NULL);
+            if(modeEditor == 1)
+                applySurface(mouseX, mouseY, surf_livre, s, NULL);
+            else
+                applySurface(385,153,surf_cursor,s, NULL);
             break;
         case SLEEPER:
-            applySurface(mouseX, mouseY, surf_dormeur, s, NULL);
+            if(modeEditor == 1)
+                applySurface(mouseX, mouseY, surf_dormeur, s, NULL);
+            else
+                applySurface(385,223,surf_cursor,s, NULL);
             break;
         case UP_E:
-            applySurface(mouseX, mouseY, surf_haut, s, NULL);
+            if(modeEditor == 1)
+                applySurface(mouseX, mouseY, surf_haut, s, NULL);
+            else
+                applySurface(385,433,surf_cursor,s, NULL);
             break;
         case DOWN_E:
-            applySurface(mouseX, mouseY, surf_bas, s, NULL);
+            if(modeEditor == 1)
+                applySurface(mouseX, mouseY, surf_bas, s, NULL);
+            else
+                applySurface(385,503,surf_cursor,s, NULL);
+
             break;
         case RIGHT_E:
-            applySurface(mouseX, mouseY, surf_droite, s, NULL);
+            if(modeEditor == 1)
+                applySurface(mouseX, mouseY, surf_droite, s, NULL);
+            else
+                applySurface(385,363,surf_cursor,s, NULL);
             break;
         case LEFT_E:
-            applySurface(mouseX, mouseY, surf_gauche, s, NULL);
+            if(modeEditor == 1)
+                applySurface(mouseX, mouseY, surf_gauche, s, NULL);
+            else
+                applySurface(385,293,surf_cursor,s, NULL);
+
             break;
         }
+
     }
 }
 
@@ -236,6 +265,47 @@ bool isMouseOnEditorHelpButton(int mouseX, int mouseY) {
     return dx * dx + dy * dy <= 22 * 22;
 }
 
+
+/****************** Nom de la fonction **********************
+* isMouseOnSelectButton                                *
+******************** Auteur , Dates *************************
+* Xavier                                                    *
+********************* Description ***************************
+* Permet de savoir si la souris est positionnée sur le      *
+* bouton d'aide (éditeur) en renvoyant True or False        *
+*********************** Entrées *****************************
+*int mouseX, int mouseY: Coordonnées de la souris par rapport
+*                        à la fenêtre                       *
+*********************** Sorties *****************************
+* retourne un booléen                                       *
+************************************************************/
+bool isMouseOnSelectButton(int mouseX, int mouseY, int i) {
+    // help button center : 242, 534, radius : 22
+    int dx = mouseX - 370;
+    int dy = mouseY - (40 + i * 70);
+
+    return dx * dx + dy * dy <= 30 * 30;
+}
+
+/****************** Nom de la fonction **********************
+* isMouseOnModeButton                                       *
+******************** Auteur , Dates *************************
+* Xavier                                                    *
+********************* Description ***************************
+* Permet de savoir si la souris est positionnée sur le      *
+* bouton de changement de mode (éditeur)                    *
+*********************** Entrées *****************************
+*int mouseX, int mouseY: Coordonnées de la souris par rapport
+*                        à la fenêtre                       *
+*********************** Sorties *****************************
+* retourne un booléen                                       *
+************************************************************/
+bool isMouseOnModeButton(int mouseX, int mouseY) {
+    // mode button x1 : 280, x2:320,y1 : 0 y2: 40
+    return mouseX < 320 && mouseY < 40 && 0 < mouseY && 280 < mouseX;
+}
+
+
 /****************** Nom de la fonction **********************
 * setEditorForeground                                       *
 ******************** Auteur , Dates *************************
@@ -250,10 +320,92 @@ bool isMouseOnEditorHelpButton(int mouseX, int mouseY) {
 *********************** Sorties *****************************
 * ne retoune rien                                           *
 ************************************************************/
-void setEditorForeground(SDL_Surface *screen, int mouseX, int mouseY) {
+void setEditorForeground(SDL_Surface *screen, int mouseX, int mouseY, int modeEditor) {
 
     if (isMouseOnEditorHelpButton(mouseX, mouseY)) {
-         setScreenBackground(screen, surf_Transparency);
-         setScreenBackground(screen,  surf_EditorHelp);
+        setScreenBackground(screen, surf_Transparency);
+        if(modeEditor == 1 ) {
+            setScreenBackground(screen,  surf_EditorHelp);
+        } else {
+            setScreenBackground(screen,  surf_EditorHelp2);
+        }
+
     }
 }
+
+
+/****************** Nom de la fonction **********************
+* setSelectCursor                                           *
+******************** Auteur , Dates *************************
+* Xavier                                                    *
+********************* Description ***************************
+* Permet de charger la selection quand on est sur la case   *
+* correspondante (mode 2)                                   *
+*********************** Entrées *****************************
+*int mouseX, int mouseY: Coordonnées de la souris par rapport
+*                        à la fenêtre                       *
+* CaseType & choice: variable de la selection               *
+*********************** Sorties *****************************
+* ne retoune rien                                           *
+************************************************************/
+void setSelectCursor(int mouseX, int mouseY, CaseType & choice) {
+
+    for(int i = 0; i  < 8; i++) {
+
+        if(isMouseOnSelectButton(mouseX, mouseY, i)) {
+            switch (i) {
+            case 0:
+                choice = MONSTER;
+                break;
+            case 1:
+                choice = ICE;
+                break;
+            case 2:
+                choice = BOOK;
+                break;
+            case 3:
+                choice = SLEEPER;
+                break;
+            case 4:
+                choice = LEFT_E;
+                break;
+            case 5:
+                choice = RIGHT_E;
+                break;
+            case 6:
+                choice = UP_E;
+                break;
+            case 7:
+                choice = DOWN_E;
+                break;
+            }
+        }
+    }
+}
+
+/****************** Nom de la fonction **********************
+* setEditorBackground                                       *
+******************** Auteur , Dates *************************
+* Xavier                                                    *
+********************* Description ***************************
+* Permet de charger la surface correspondant à l'aide sur la*
+* surface screen en fonction du mode de selection           *
+*********************** Entrées *****************************
+*int mouseX, int mouseY: Coordonnées de la souris par rapport
+*                        à la fenêtre                       *
+* SDL_Surface *s: La surface de l'écran                     *
+*********************** Sorties *****************************
+* ne retoune rien                                           *
+************************************************************/
+void setEditorBackground(SDL_Surface *screen, int modeEditor) {
+
+    if (modeEditor == 1) {
+        setScreenBackground(screen, surf_backgroundEditor);
+    } else {
+        setScreenBackground(screen,  surf_backgroundEditor2);
+    }
+}
+
+
+
+

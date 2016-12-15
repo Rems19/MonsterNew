@@ -19,8 +19,12 @@ extern SDL_Surface *surf_menu;
 extern SDL_Surface *surf_win;
 extern SDL_Surface *surf_winEnd;
 extern SDL_Surface *surf_backgroundEditor;
+extern SDL_Surface *surf_backgroundEditor2;
 extern SDL_Surface *surf_EditorHelp;
+extern SDL_Surface *surf_EditorHelp2;
 extern SDL_Surface *surf_Transparency;
+extern SDL_Surface *surf_cursor;
+
 
 void loadSurfaces();
 void freeSurfaces();

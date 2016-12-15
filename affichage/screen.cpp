@@ -20,13 +20,10 @@
 void initScreen(SDL_Surface* & screen) {
     SDL_Surface *icone = SDL_LoadBMP("assets/icone.bmp");
     SDL_WM_SetIcon(icone, 0 );                                                //icone de l'appli
-
-    putenv("SDL_VIDEO_WINDOW_POS=center"); //pour centrer la fenêtre
     screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE |SDL_DOUBLEBUF);   //création fenêtre
 
-
-
     SDL_WM_SetCaption("Monster", NULL);                                                                 //titre fenêtre
+    SDL_FreeSurface(icone);
 }
 
 /****************** Nom de la fonction **********************

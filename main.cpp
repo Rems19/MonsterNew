@@ -38,6 +38,8 @@ int main() {
     int mouseX, mouseY;                 // Cursor coordinates in pixels
     int mouseXCoord, mouseYCoord;       // Coordinates of the case pointed by the cursor
 
+    int modeEditor = 1;                 //Variable permettant de passer d'un mode d'édition à un autre
+
     while ( !quit && SDL_WaitEvent(&event) ) {
 
         switch (event.type) {                                           //on fait un switch pour gérer les différents évènements
@@ -77,7 +79,7 @@ int main() {
                     levelEdit = levelSelect(mouseX, mouseY);                //on affecte le niveau selectionné à levelEdit
                     if(levelEdit != 0) {                                    //si un niveau a été sélectionné
                         loadLevel(grid, levelEdit);                         //on charge le niveau correspondant
-                        state = EDITOR_GRID;                                //on change le statut du programme  pour lancer l'éditeur
+                        state = EDITOR_GRID;                                //on change le statut du programme  pour lancer l'éditeur                         
                     }
 
                 } else if (state == GAME) {                             //si nous sommes dans le jeu :
@@ -92,7 +94,23 @@ int main() {
                     if(isMouseOnGameResetButton(mouseX, mouseY)) {          //si la souris est sur le bouton de sauvegarde (même position que "reset")
                         saveLevel(grid, levelEdit);                         //on sauvegarde le niveau
                         state = MENU;                                       //on chage le statut du jeu pour repasser dans le menu
+                        initScreen(screen);
                     }
+
+
+                    if(isMouseOnModeButton(mouseX, mouseY) ) {
+                        if(modeEditor == 1) {
+                            modeEditor = 2;
+                            screen = SDL_SetVideoMode(SCREEN_WIDTH+90, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE |SDL_DOUBLEBUF); //on agrandit la fenetre pour le mode 2
+                        } else {
+                            modeEditor = 1;
+                            initScreen(screen);                                 //on reset la taille de la fenetre
+                        }
+                    }
+
+                    if(modeEditor == 2)
+                        setSelectCursor(mouseX, mouseY, choice);
+
                 }
                 break;
 
@@ -114,6 +132,7 @@ int main() {
                         saveLevel(grid, levelEdit);                     //on sauvegarde le niveau
 
                     state = MENU;                                       //on change le statut du jeu pour repasser dans le menu
+                    initScreen(screen);                                 //on reset la taille de la fenetre
                 }
                 break;
 
@@ -123,7 +142,6 @@ int main() {
 
         default: break;
         }
-
 
         if (state == MENU) {                                                        //si on est dans le menu
 
@@ -136,16 +154,14 @@ int main() {
             levelWin(grid, screen, currentLevel, state, maxLevel);                  //on lance levelWin qui permet de vérifier si
             mouvement(grid, event, screen, mouseXCoord, mouseYCoord, currentLevel); // on se charge du déplacement du monstre
             setScreenBackground(screen, surf_background);                           //on charge le fond relatif au jeu
-            draw(grid, screen);                                                     //on charge l'affichage de la grille dans la surface screen
-
-                                                                                    //l'on a gagné ou non et d'agir en conséquence
+            draw(grid, screen);                                                     //on charge l'affichage de la grille dans la surface screen                                                                                   
 
         } else if (state == EDITOR_GRID) {                                          //si on est dans l'éditeur de niveaux
 
-            setScreenBackground(screen, surf_backgroundEditor);                     //on affiche le background de l editeur
+            setEditorBackground(screen, modeEditor);
             draw(grid, screen);                                                     //on affiche les éléments de la grille
-            drawCursor(screen, mouseX, mouseY, choice);                             //on affiche la sélection à coté du curseur
-            setEditorForeground(screen, mouseX, mouseY);                            //on superpose l'aide au background si on passe la souris sur le bouton help
+            drawCursor(screen, mouseX, mouseY, choice, modeEditor);                             //on affiche la sélection à coté du curseur
+            setEditorForeground(screen, mouseX, mouseY, modeEditor);                            //on superpose l'aide au background si on passe la souris sur le bouton help
 
             checkEditorKeyEvent(choice);                                            //on gère les évènements relatifs au clavier
             checkEditorMouseClickEvent(grid, mouseXCoord, mouseYCoord, choice);     //on gère les évènements relatifs à la souris
