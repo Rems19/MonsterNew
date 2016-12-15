@@ -29,44 +29,47 @@ struct ColorKey {
 /****************** Nom de la fonction **********************
 * loadSurface                                               *
 ******************** Auteur , Dates *************************
-* Nom/Date : Éventuellement la version                      *
+* REMI                                                      *
 ********************* Description ***************************
 * Permet de ne pas se préocuper du dossier contenant l'image*
 * lorsque l'on utilise la fonction loadImage                *
 *********************** Entrées *****************************
-* Vous décrivez ici les données en entrée de la fonction    *
+* string name : nom de la surface                           *
 *********************** Sorties *****************************
-* Vous détaillez ici ce que renvoie la fonction             *
+* retourne la surface chargée                               *
 ************************************************************/
 SDL_Surface* loadSurface(string name) {
     return loadImage("assets/" + name);
 }
 
 /****************** Nom de la fonction **********************
-* NOM_FONCTION                                              *
+* loadSurface                                               *
 ******************** Auteur , Dates *************************
-* Nom/Date : Éventuellement la version                      *
+* REMI                                                      *
 ********************* Description ***************************
-* Vous décrivez ici ce que fait cette fonction              *
+* Permet de ne pas se préocuper du dossier contenant l'image*
+* lorsque l'on utilise la fonction loadImageWithColorKey    *
 *********************** Entrées *****************************
-* Vous décrivez ici les données en entrée de la fonction    *
+* string name : nom de la surface                           *
+* ColorKey ck : couleur rgb                                 *
+* int alpha : opacité de la texture                         *
 *********************** Sorties *****************************
-* Vous détaillez ici ce que renvoie la fonction             *
+* return la surface chargé                                  *
 ************************************************************/
 SDL_Surface* loadSurface(string name, ColorKey ck, int alpha) {
     return loadImageWithColorKey("assets/" + name, ck.r, ck.g, ck.b, alpha);
 }
 
 /****************** Nom de la fonction **********************
-* NOM_FONCTION                                              *
+* loadSurfaces()                                            *
 ******************** Auteur , Dates *************************
-* Nom/Date : Éventuellement la version                      *
+* REMI                      *
 ********************* Description ***************************
-* Vous décrivez ici ce que fait cette fonction              *
+* Permet de charger l'ensemble des textures du programme    *
 *********************** Entrées *****************************
-* Vous décrivez ici les données en entrée de la fonction    *
+*                                                           *
 *********************** Sorties *****************************
-* Vous détaillez ici ce que renvoie la fonction             *
+*                                                           *
 ************************************************************/
 void loadSurfaces() {
     surf_background = loadSurface("background.bmp");
@@ -90,15 +93,16 @@ void loadSurfaces() {
 }
 
 /****************** Nom de la fonction **********************
-* NOM_FONCTION                                              *
+* freeSurfaces()                                            *
 ******************** Auteur , Dates *************************
-* Nom/Date : Éventuellement la version                      *
+* REMI                                                      *
 ********************* Description ***************************
-* Vous décrivez ici ce que fait cette fonction              *
+* Permet de nettoyer l'ensemble des textures du programme en*
+* en mémoire                                                *
 *********************** Entrées *****************************
-* Vous décrivez ici les données en entrée de la fonction    *
+*                                                           *
 *********************** Sorties *****************************
-* ne retourne rien                                          *
+*                                                           *
 ************************************************************/
 void freeSurfaces() {
     SDL_FreeSurface(surf_background);

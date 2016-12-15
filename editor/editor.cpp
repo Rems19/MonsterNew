@@ -3,12 +3,12 @@
 /****************** Nom de la fonction **********************
 * checkEditorKeyEvent                                       *
 ******************** Auteur , Dates *************************
-* Nom/Date : Éventuellement la version                      *
+* Xavier                                                    *
 ********************* Description ***************************
 * se charge de modifier la sélection du type de case en     *
 *       fonction de la touche du clavier pressé             *
 *********************** Entrées *****************************
-* La variable choice qui correspond au choix de la valeur de *
+* La variable choice qui correspond au choix de la valeur de*
 *                       la sélection                        *
 *********************** Sorties *****************************
 * ne retourne rien mais il y a modification de la variable  *
@@ -48,7 +48,7 @@ void checkEditorKeyEvent(CaseType & choice) {
 /****************** Nom de la fonction **********************
 * checkEditorMouseClickEvent                                *
 ******************** Auteur , Dates *************************
-* Nom/Date : Éventuellement la version                      *
+* Xavier                                                    *
 ********************* Description ***************************
 * Récupère les évenements de la souris et modifie la grille *
 *  en fonction de la position du curseur, de la selection   *
@@ -96,7 +96,7 @@ void checkEditorMouseClickEvent(TGrid & grid, int coordX, int coordY, CaseType c
 /****************** Nom de la fonction **********************
 * drawCursor                                                *
 ******************** Auteur , Dates *************************
-* Nom/Date : Éventuellement la version                      *
+* Xavier                                                    *
 ********************* Description ***************************
 * Fonction qui charge l'affichage du de la case selectionné *
 *  (l'image) à coté du curseur en modifiant la surface      *
@@ -143,9 +143,9 @@ void drawCursor(SDL_Surface *s, int mouseX, int mouseY, int choice) {
 }
 
 /****************** Nom de la fonction **********************
-* levelSelect                                            *
+* levelSelect                                               *
 ******************** Auteur , Dates *************************
-* Nom/Date : Éventuellement la version                      *
+* Xavier                                                    *
 ********************* Description ***************************
 * Permet de selectionner un niveau lorsque l'on va dans     *
 *              l'éditeur de niveaux                         *
@@ -177,7 +177,7 @@ int levelSelect(int mouseX, int mouseY) {
 /****************** Nom de la fonction **********************
 * saveLevel                                                 *
 ******************** Auteur , Dates *************************
-* Nom/Date : Éventuellement la version                      *
+* Xavier                                                    *
 ********************* Description ***************************
 * Permet de sauvegarder la grille en créant (ou écrasant) un*
 * fichier texte correspondant au niveau sélectionné puis le *
@@ -218,7 +218,7 @@ void saveLevel(TGrid grid, int level) {
 /****************** Nom de la fonction **********************
 * isMouseOnEditorLevelButton                                *
 ******************** Auteur , Dates *************************
-* Nom/Date : Éventuellement la version                      *
+* Xavier                                                    *
 ********************* Description ***************************
 * Permet de savoir si la souris est positionnée sur le      *
 * bouton d'aide (éditeur) en renvoyant True or False        *
@@ -239,7 +239,7 @@ bool isMouseOnEditorHelpButton(int mouseX, int mouseY) {
 /****************** Nom de la fonction **********************
 * setEditorForeground                                       *
 ******************** Auteur , Dates *************************
-* Nom/Date : Éventuellement la version                      *
+* Xavier                                                    *
 ********************* Description ***************************
 * Permet de charger la surface correspondant à l'aide sur la*
 * surface screen si la souris est sur le bouton aide        *

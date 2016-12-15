@@ -8,11 +8,11 @@ SDL_Surface* menuBackground_quit;
 /****************** Nom de la fonction **********************
 * initMenu                                                  *
 ******************** Auteur , Dates *************************
-* Nom/Date : Éventuellement la version                      *
+* REMI                                                      *
 ********************* Description ***************************
 * charge les surfaces du menu                               *
 *********************** Entrées *****************************
-* n'a pas d'entrées                                          *
+* n'a pas d'entrées                                         *
 *********************** Sorties *****************************
 * ne retourne rien                                          *
 ************************************************************/
@@ -26,7 +26,7 @@ void initMenu() {
 /****************** Nom de la fonction **********************
 * isMouseOnPlayButton                                       *
 ******************** Auteur , Dates *************************
-* Nom/Date : Éventuellement la version                      *
+* REMI                                                      *
 ********************* Description ***************************
 * Permet de savoir si la souris est sur le bouton Play      *
 * dans le menu                                              *
@@ -45,7 +45,7 @@ bool isMouseOnPlayButton(int mouseX, int mouseY) {
 /****************** Nom de la fonction **********************
 * isMouseOnEditButton                                       *
 ******************** Auteur , Dates *************************
-* Nom/Date : Éventuellement la version                      *
+* REMI                                                      *
 ********************* Description ***************************
 * Permet de savoir si la souris est sur le bouton edtion    *
 * dans le menu                                              *
@@ -64,7 +64,7 @@ bool isMouseOnEditButton(int mouseX, int mouseY) {
 /****************** Nom de la fonction **********************
 * isMouseOnQuitButton                                       *
 ******************** Auteur , Dates *************************
-* Nom/Date : Éventuellement la version                      *
+* REMI                                                      *
 ********************* Description ***************************
 * Permet de savoir si la souris est sur le bouton quitter   *
 * dans le menu                                              *
@@ -83,7 +83,7 @@ bool isMouseOnQuitButton(int mouseX, int mouseY) {
 /****************** Nom de la fonction **********************
 * isMouseOnGameResetButton                                  *
 ******************** Auteur , Dates *************************
-* Nom/Date : Éventuellement la version                      *
+* REMI                                                      *
 ********************* Description ***************************
 * Permet de savoir si la souris est sur le bouton reset     *
 * dans le jeu / editeur                                     *
@@ -102,7 +102,7 @@ bool isMouseOnGameResetButton(int mouseX, int mouseY) {
 /****************** Nom de la fonction **********************
 * getMenuBackground                                         *
 ******************** Auteur , Dates *************************
-* Nom/Date : Éventuellement la version                      *
+* REMI                                                      *
 ********************* Description ***************************
 * Permet de retourner l'image de fond du menu en fonction   *
 * de la position de la souris (bouton plus gros quand on est*
@@ -133,7 +133,7 @@ SDL_Surface* getMenuBackground(int mouseX, int mouseY) {
 /****************** Nom de la fonction **********************
 * freeMenuSurfaces                                          *
 ******************** Auteur , Dates *************************
-* Nom/Date : Éventuellement la version                      *
+* REMI                                                      *
 ********************* Description ***************************
 * Nettoie les surfaces chargées en mémoires du menu         *
 *********************** Entrées *****************************

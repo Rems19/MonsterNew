@@ -3,7 +3,7 @@
 /****************** Nom de la fonction **********************
 * coordsToPixels                                            *
 ******************** Auteur , Dates *************************
-* Nom/Date : Éventuellement la version                      *
+* REMI                                                      *
 ********************* Description ***************************
 * Permet de convertir les coordonnées par rapport à la      *
 * grille en coordonnées par rapport à la fenêtre en faisant *
@@ -22,7 +22,7 @@ void coordsToPixels(int coordX, int coordY, int & x, int & y) {
 /****************** Nom de la fonction **********************
 *  pixelsToCoords                                           *
 ******************** Auteur , Dates *************************
-* Nom/Date : Éventuellement la version                      *
+*  REMI                                                     *
 ********************* Description ***************************
 * Permet de convertir les coordonnées par rapport à la      *
 * fenêtre en coordonnées par rapport à la grille en faisant *
@@ -47,7 +47,7 @@ void pixelsToCoords(int x, int y, int & coordX, int & coordY) {
 /****************** Nom de la fonction **********************
 * initGrid                                                  *
 ******************** Auteur , Dates *************************
-* Nom/Date : Éventuellement la version                      *
+*  REMI                                                     *
 ********************* Description ***************************
 * Permet d'initialiser les valeurs d'une grille passée en   *
 * référence en la remplissant de case vide                  *
@@ -68,7 +68,7 @@ void initGrid(TGrid & grid) {
 /****************** Nom de la fonction **********************
 * draw                                                      *
 ******************** Auteur , Dates *************************
-* Nom/Date : Éventuellement la version                      *
+* Xavier                                                    *
 ********************* Description ***************************
 * Permet de charger l'affichage des éléments de la grille   *
 * dans la mémoire tampon en passant une surface par référence
@@ -129,7 +129,7 @@ void draw(TGrid grid, SDL_Surface *s) {
 /****************** Nom de la fonction **********************
 * loadLevel                                                 *
 ******************** Auteur , Dates *************************
-* Nom/Date : Éventuellement la version                      *
+*  Xavier                                                   *
 ********************* Description ***************************
 * Permet de charger un niveau à partir d'un fichier texte   *
 * correspondant à un entier passé en paramètre              *

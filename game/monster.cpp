@@ -4,7 +4,7 @@
 /****************** Nom de la fonction **********************
 * collisionWith                                             *
 ******************** Auteur , Dates *************************
-* Nom/Date : Éventuellement la version                      *
+* REMI                                                      *
 ********************* Description ***************************
 * Permet de supprimer un glaçon ou de réveiller un dormeur  *
 * présent dans une case donnée en paramètre                 *
@@ -40,7 +40,7 @@ CaseType collisionWith(TGrid & grid, int x, int y) {
 /****************** Nom de la fonction **********************
 * sortie                                                    *
 ******************** Auteur , Dates *************************
-* Nom/Date : Éventuellement la version                      *
+* Xavier                                                    *
 ********************* Description ***************************
 * Retourne un booléen pour savoir si un monstre sort de la  *
 * grille                                                    *
@@ -77,7 +77,7 @@ bool sortie(int x, int y, Direction direction){
 /****************** Nom de la fonction **********************
 * checkColAroundMonster                                     *
 ******************** Auteur , Dates *************************
-* Nom/Date : Éventuellement la version                      *
+* Remi                                                      *
 ********************* Description ***************************
 * Permet à partir des coordonnées d'un monstre de réveiller *
 * tous les monstres autour                                  *
@@ -117,7 +117,7 @@ void checkColAroundMonster(TGrid & grid, int x, int y) {
 /****************** Nom de la fonction **********************
 * moveXYAccordingToDirection                                *
 ******************** Auteur , Dates *************************
-* Nom/Date : Éventuellement la version                      *
+* REMI                                                      *
 ********************* Description ***************************
 * Permet d'incrémenter des coefficients x et y en fonction  *
 * de la direction (qui permettent d'avoir la position des   *
@@ -160,7 +160,7 @@ void moveXYAccordingToDirection(Direction direction, int & x, int & y) {
 /****************** Nom de la fonction **********************
 * findNextCase                                              *
 ******************** Auteur , Dates *************************
-* Nom/Date : Éventuellement la version                      *
+* XAVIER                                                    *
 ********************* Description ***************************
 * Permet de déterminer et d'affecter les coordonnées de la  *
 * case final du monstre après déplacement dans une          *
@@ -174,7 +174,7 @@ void moveXYAccordingToDirection(Direction direction, int & x, int & y) {
 *                        le monstre                         *
 * SDL_Surface *s: surface de la fenêtre                     *
 *********************** Sorties *****************************
-* ne retourne rien (référence)                              *
+* retourn la direction de la case de destination du monstre *
 ************************************************************/
 Direction findNextCase(TGrid & grid, Direction direction, int x, int y, int & caseFinalx, int & caseFinaly) {
 
@@ -228,7 +228,7 @@ Direction findNextCase(TGrid & grid, Direction direction, int x, int y, int & ca
 /****************** Nom de la fonction **********************
 * animMonster                                               *
 ******************** Auteur , Dates *************************
-* Nom/Date : Éventuellement la version                      *
+* XAVIER                                                    *
 ********************* Description ***************************
 * Permet de déplacer le monstre à partir d'un direction     *
 * et d'agir en fonction de ce déplacement (collisions,      *
@@ -271,7 +271,7 @@ void animMonster(TGrid & grid, SDL_Surface *s, Direction & direction,int x, int 
 /****************** Nom de la fonction **********************
 * animGlacon                                                *
 ******************** Auteur , Dates *************************
-* Nom/Date : Éventuellement la version                      *
+* REMI                                                      *
 ********************* Description ***************************
 * Permet d'animer le glaçon lorsqu'il est détruit dans une  *
 * case de coodonnées x , y                                  *
@@ -313,7 +313,7 @@ void animGlacon(TGrid & grid, SDL_Surface *s,int x, int y) {
 /****************** Nom de la fonction **********************
 * moveMonster                                               *
 ******************** Auteur , Dates *************************
-* Nom/Date : Éventuellement la version                      *
+* XAVIER + REMI                                             *
 ********************* Description ***************************
 * Permet de déplacer le monstre à partir d'un direction     *
 * et d'agir en fonction de ce déplacement (collisions,      *
@@ -334,6 +334,9 @@ void moveMonster(TGrid & grid, int x, int y, Direction & direction, SDL_Surface 
     int caseFinalx;
     int caseFinaly;
 
+    int colWithX;
+    int colWithY;
+
     Direction nextCaseDir = findNextCase(grid, direction, x, y, caseFinalx, caseFinaly );
 
     grid[x][y].type = EMPTY;
@@ -342,37 +345,28 @@ void moveMonster(TGrid & grid, int x, int y, Direction & direction, SDL_Surface 
 
     grid[caseFinalx][caseFinaly].type = MONSTER;
 
+//evenement après deplacement du monstre
 
-    /***********************************************************************************
- ******** evenement après deplacement du monstre
- ********************************************************************************/
-    if (nextCaseDir != NONE) {      // si la case sur laquelle on est une direction on la modifie
+    if (nextCaseDir != NONE) {      // si la case sur laquelle on est une direction, on la modifie
         direction = nextCaseDir;
     }
 
-    if(sortie(caseFinalx,caseFinaly,direction)) {
-        initGrid(grid);
-        loadLevel(grid, num);
+    if(sortie(caseFinalx,caseFinaly,direction)) {   //si on sort de la grille, on reset le niveau
+        initGrid(grid);                             //réinitialise la grille par sécurité
+        loadLevel(grid, num);                       //on charge le niveau à partir du fichier
     } else {
 
-        int colWithX;
-        int colWithY;
+        colWithX = caseFinalx;                      //on se positionne au niveau de la nouvelle case du monstre en x
+        colWithY = caseFinaly;                      //on se positionne au niveau de la nouvelle case du monstre en y
 
-        colWithX = caseFinalx;
-        colWithY = caseFinaly;
+        moveXYAccordingToDirection(direction, colWithX, colWithY);      //on recupère la case en face du monstre
 
-        moveXYAccordingToDirection(direction, colWithX, colWithY);
+        if( collisionWith(grid, colWithX,colWithY) == ICE) animGlacon(grid, s, colWithX, colWithY); //si c'est un glaçon on lance l'animation
 
-        if( collisionWith(grid, colWithX,colWithY) == ICE) animGlacon(grid, s, colWithX, colWithY);
-
-        setScreenBackground(s,surf_background);
-        draw(grid, s);
-        SDL_Flip(s);
-
-        if (nextCaseDir != NONE){
+        if (nextCaseDir != NONE){                                               //si on est sur une flèche on relance la fonction moveMonster avec la nouvelle valeur de direction
             moveMonster(grid, caseFinalx, caseFinaly, direction, s, num);
         } else {
-            checkColAroundMonster(grid, caseFinalx, caseFinaly);
+            checkColAroundMonster(grid, caseFinalx, caseFinaly);                //sinon on réveille les dormeurs autour du monstre qui a été déplacé
         }
     }
 }
@@ -380,7 +374,7 @@ void moveMonster(TGrid & grid, int x, int y, Direction & direction, SDL_Surface 
 /****************** Nom de la fonction **********************
 * mouvement                                                 *
 ******************** Auteur , Dates *************************
-* Nom/Date : Éventuellement la version                      *
+* XAVIER                                                    *
 ********************* Description ***************************
 * Permet de selectionner une direction en cliquant sur un   *
 * monstre et en relachant sur une case                      *
@@ -437,7 +431,7 @@ void mouvement (TGrid & grid, SDL_Event &event,SDL_Surface *s, int mouseXcoord, 
 /****************** Nom de la fonction **********************
 * checkWin                                                  *
 ******************** Auteur , Dates *************************
-* Nom/Date : Éventuellement la version                      *
+* REMI                                                      *
 ********************* Description ***************************
 * Permet de savoir si on a fini un niveau en renvoyant vrai *
 * ou faux (s'il reste des dormeurs)                         *
@@ -467,7 +461,7 @@ bool checkWin(TGrid grid) {
 /****************** Nom de la fonction **********************
 * levelWin                                                  *
 ******************** Auteur , Dates *************************
-* Nom/Date : Éventuellement la version                      *
+* XAVIER                                                    *
 ********************* Description ***************************
 * permet d'agir quand l'on termine un niveau :              *
 * on passe au niveau suivant ou on lance le screen de fin   *
@@ -481,22 +475,24 @@ bool checkWin(TGrid grid) {
 * Vous détaillez ici ce que renvoie la fonction             *
 ************************************************************/
 void levelWin(TGrid & grid, SDL_Surface *s, int &num, State &state, int levelMax) {
-    if(checkWin(grid) == 1 && num < levelMax) {
-        updateScreen(s);
-        SDL_Delay(500);
-        setScreenBackground(s,surf_win);
-        SDL_Flip(s);
-        SDL_Delay(1500);
 
-        num++;
+    if(checkWin(grid) == 1 && num < levelMax) {         //si on est pas au dernier niveau et que le niveau est réussi
 
-        initGrid(grid);
-        loadLevel(grid, num);
+        SDL_Delay(300);                                 //on fait une pause pour qu'on puisse voir que le niveau est bien terminé à l'écran
+        setScreenBackground(s,surf_win);                //on applique la surface du niveau gagné à screnn
+        SDL_Flip(s);                                    //on met à jour l'affichage
+        SDL_Delay(1000);                                //on fait une pause de 1s avant de passer au niveau suivant
 
-    } else if(checkWin(grid) == 1 && num == levelMax) {
-        setScreenBackground(s,surf_winEnd);
-        SDL_Flip(s);
-        SDL_Delay(3000);
-        state = MENU;
+        num++;                                          //on incrémente de 1 le numero du niveau actuel
+
+        initGrid(grid);                                 //on reinitialise la grille par sécurité
+        loadLevel(grid, num);                           //on charge le nouveau niveau dans la grille
+
+    } else if(checkWin(grid) == 1 && num == levelMax) { //si on a fini le jeu
+
+        setScreenBackground(s,surf_winEnd);             //on applique la surface de fin
+        SDL_Flip(s);                                    //on met à jour l'affichage
+        SDL_Delay(2000);                                //on fait une pause de 2s
+        state = MENU;                                   //on passe au menu
     }
 }

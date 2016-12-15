@@ -3,7 +3,7 @@
 /****************** Nom de la fonction **********************
 * initSDL()                                                 *
 ******************** Auteur , Dates *************************
-* Nom/Date : Éventuellement la version                      *
+* REMI                                                      *
 ********************* Description ***************************
 * Permet d'initialiser tous les éléments la librairie SDL   *
 *********************** Entrées *****************************
@@ -18,7 +18,7 @@ void initSDL() {
 /****************** Nom de la fonction **********************
 * loadImage                                                 *
 ******************** Auteur , Dates *************************
-* Nom/Date : Éventuellement la version                      *
+* REMI                                                      *
 ********************* Description ***************************
 * Permet de retourner l'adresse d'une image chargée         *
 * à partir d'un string passé en paramètre                   *
@@ -47,7 +47,7 @@ SDL_Surface* loadImage(std::string filename) {
 /****************** Nom de la fonction **********************
 * loadImageWithColorKey                                     *
 ******************** Auteur , Dates *************************
-* Nom/Date : Éventuellement la version                      *
+* REMI                                                      *
 ********************* Description ***************************
 * Meme fonction que loadImage mais permet en plus de charger*
 * une image en ignorant une couleur et d'ajouter un         *
@@ -86,7 +86,7 @@ SDL_Surface* loadImageWithColorKey(std::string filename, int r, int g, int b, in
 /****************** Nom de la fonction **********************
 * applySurface                                              *
 ******************** Auteur , Dates *************************
-* Nom/Date : Éventuellement la version                      *
+* REMI                                                      *
 ********************* Description ***************************
 * Permet d'appliquer une surface source à une surface de    *
 * destination en la modifiant à partir de coordonnées x et y.

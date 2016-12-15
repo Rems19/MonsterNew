@@ -133,10 +133,11 @@ int main() {
 
         } else if (state == GAME) {                                                 //si on est dans le jeu
 
+            levelWin(grid, screen, currentLevel, state, maxLevel);                  //on lance levelWin qui permet de vérifier si
             mouvement(grid, event, screen, mouseXCoord, mouseYCoord, currentLevel); // on se charge du déplacement du monstre
             setScreenBackground(screen, surf_background);                           //on charge le fond relatif au jeu
             draw(grid, screen);                                                     //on charge l'affichage de la grille dans la surface screen
-            levelWin(grid, screen, currentLevel, state, maxLevel);                  //on lance levelWin qui permet de vérifier si
+
                                                                                     //l'on a gagné ou non et d'agir en conséquence
 
         } else if (state == EDITOR_GRID) {                                          //si on est dans l'éditeur de niveaux
